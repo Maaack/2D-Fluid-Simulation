@@ -1,0 +1,129 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://AdvectShader.tres" type="Shader" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://DivergenceJacobiThing.tres" type="Shader" id=3]
+[ext_resource path="res://DyeViewport.gd" type="Script" id=5]
+[ext_resource path="res://Main.gd" type="Script" id=6]
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/texelSize = Vector2( 1, 1 )
+shader_param/dyeTexelSize = Vector2( 0.01, 0.01 )
+shader_param/deltaTime = 0.0
+shader_param/dissipation = 0.001
+
+[sub_resource type="ShaderMaterial" id=7]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/texelSize = Vector2( 1, 1 )
+shader_param/dyeTexelSize = Vector2( 0.01, 0.01 )
+shader_param/deltaTime = null
+shader_param/dissipation = 0.001
+
+[sub_resource type="ViewportTexture" id=9]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/texelSize = Vector2( 1, 1 )
+shader_param/dyeTexelSize = Vector2( 0.01, 0.01 )
+shader_param/deltaTime = 0.001
+shader_param/dissipation = 0.0
+shader_param/velocity = SubResource( 9 )
+shader_param/advected = ExtResource( 2 )
+
+[sub_resource type="ViewportTexture" id=6]
+viewport_path = NodePath("DyeViewport")
+
+[sub_resource type="ViewportTexture" id=8]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ViewportTexture" id=12]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ViewportTexture" id=13]
+viewport_path = NodePath("DyeViewport")
+
+[sub_resource type="ShaderMaterial" id=11]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/texelSize = Vector2( 1, 1 )
+shader_param/alpha = 1.0
+shader_param/beta = 1.0
+shader_param/x = SubResource( 13 )
+shader_param/b = SubResource( 12 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 6 )
+
+[node name="DyeViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+script = ExtResource( 5 )
+
+[node name="Icon2" type="Sprite" parent="DyeViewport"]
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Icon" type="Sprite" parent="DyeViewport"]
+visible = false
+material = SubResource( 3 )
+position = Vector2( 32, 32 )
+texture = ExtResource( 2 )
+
+[node name="VelocityViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+script = ExtResource( 5 )
+
+[node name="Icon2" type="Node2D" parent="VelocityViewport"]
+
+[node name="Icon2" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 2.3, 0, 0, 1 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Icon3" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 0, 2.3, 0, 1 )
+texture = ExtResource( 2 )
+centered = false
+offset = Vector2( 32, 32 )
+
+[node name="Icon" type="Sprite" parent="VelocityViewport"]
+visible = false
+material = SubResource( 7 )
+position = Vector2( 32, 32 )
+texture = ExtResource( 2 )
+
+[node name="Icon" type="Sprite" parent="."]
+material = SubResource( 10 )
+position = Vector2( 821, 198 )
+scale = Vector2( 6.05469, 6.20313 )
+texture = ExtResource( 2 )
+
+[node name="ViewportIcon" type="Sprite" parent="."]
+position = Vector2( 130, 131 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 6 )
+
+[node name="ViewportIcon2" type="Sprite" parent="."]
+position = Vector2( 414, 129 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 8 )
+
+[node name="ViewportIcon3" type="Sprite" parent="."]
+material = SubResource( 11 )
+position = Vector2( 128, 430 )
+scale = Vector2( 4, 4 )
+texture = ExtResource( 2 )

@@ -1,0 +1,65 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform highp sampler2D velocity;
+uniform highp sampler2D advected;
+uniform vec2 texelSize = vec2(1.0, 1.0);
+uniform vec2 dyeTexelSize;
+uniform highp float deltaTime;
+uniform highp float dissipation;
+
+vec4 bilerp_bad(sampler2D sam, vec2 position, vec2 tSize)
+{
+    vec4 ij; // i0, j0, i1, j1
+    ij.xy = floor(position - 0.5) + 0.5;
+    ij.zw = ij.xy + 1.0;
+    vec2 fuv = position - ij.xy;
+
+    vec4 uv = ij / tSize.xyxy;
+    vec4 a = texture(sam, uv.xy);
+    vec4 b = texture(sam, uv.zy);
+    vec4 c = texture(sam, uv.xw);
+    vec4 d = texture(sam, uv.zw);
+
+
+    return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+}
+
+vec4 bilerp(sampler2D sam, vec2 uv, vec2 tsize) {
+    vec2 st = uv / tsize - 0.5;
+    vec2 iuv = floor(st);
+    vec2 fuv = fract(st);
+	
+    vec4 a = texture(sam, (iuv + vec2(0.5, 0.5)) * tsize);
+    vec4 b = texture(sam, (iuv + vec2(1.5, 0.5)) * tsize);
+    vec4 c = texture(sam, (iuv + vec2(0.5, 1.5)) * tsize);
+    vec4 d = texture(sam, (iuv + vec2(1.5, 1.5)) * tsize);
+    return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+}
+
+void fragment()
+{
+	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, texelSize).xy * texelSize;
+	vec4 result = bilerp(advected, coord, dyeTexelSize);
+	float decay = 1.0 + dissipation * deltaTime;
+	COLOR = result / decay;
+}
+
+/*
+void fragment()
+{
+    vec2 uv = UV.xy / gridSize.xy;
+    float scale = 1.0 / gridScale;
+
+    // trace point back in time
+    vec2 p = UV.xy - timestep * scale * texture(velocity, uv).xy;
+
+    COLOR = vec4(dissipation * bilerp(advected, p), 0.0, 1.0);
+}
+*/"

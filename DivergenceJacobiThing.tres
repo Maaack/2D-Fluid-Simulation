@@ -1,0 +1,33 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform sampler2D x;
+uniform sampler2D b;
+
+uniform vec2 texelSize = vec2(1.0, 1.0);
+
+uniform float alpha;
+uniform float beta;
+
+void fragment()
+{
+    vec2 uv = UV.xy / texelSize.xy;
+
+    vec2 xOffset = vec2(1.0 / texelSize.x, 0.0);
+    vec2 yOffset = vec2(0.0, 1.0 / texelSize.y);
+
+    vec2 xl = texture(x, uv - xOffset).xy;
+    vec2 xr = texture(x, uv + xOffset).xy;
+    vec2 xb = texture(x, uv - yOffset).xy;
+    vec2 xt = texture(x, uv + yOffset).xy;
+
+    vec2 bc = texture(b, uv).xy;
+
+    COLOR = vec4((xl + xr + xb + xt + alpha * bc) / beta, 0.0, 1.0);
+}"
