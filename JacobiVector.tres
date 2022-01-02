@@ -1,0 +1,41 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform sampler2D velocitySampler;
+
+uniform vec2 velocitySize;
+
+uniform float alpha;
+uniform float beta;
+
+vec2 jacobi(sampler2D x, sampler2D b, vec2 uv, vec2 size)
+{
+	vec2 texelSize = 1.0 / size;
+
+    vec2 xOffset = vec2(texelSize.x, 0.0);
+    vec2 yOffset = vec2(0.0, texelSize.y);
+
+    vec2 xl = texture(x, uv - xOffset).xy;
+    vec2 xr = texture(x, uv + xOffset).xy;
+    vec2 xb = texture(x, uv - yOffset).xy;
+    vec2 xt = texture(x, uv + yOffset).xy;
+
+    vec2 bc = texture(b, uv).xy;
+
+    return vec2((xl + xr + xb + xt + alpha * bc) / beta);
+}
+
+void fragment()
+{
+	vec2 velocity;
+	//for (int i = 0; i < 10; i++) {
+	velocity = jacobi(velocitySampler, velocitySampler, UV, velocitySize);
+	//}
+	COLOR = vec4(velocity, 0.0, 1.0);
+}"

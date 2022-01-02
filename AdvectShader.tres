@@ -9,57 +9,26 @@ shader_type canvas_item;
 
 uniform highp sampler2D velocity;
 uniform highp sampler2D advected;
-uniform vec2 texelSize = vec2(1.0, 1.0);
-uniform vec2 dyeTexelSize;
+uniform vec2 velocitySize;
+uniform vec2 advectedSize;
 uniform highp float deltaTime;
-uniform highp float dissipation;
 
-vec4 bilerp_bad(sampler2D sam, vec2 position, vec2 tSize)
-{
-    vec4 ij; // i0, j0, i1, j1
-    ij.xy = floor(position - 0.5) + 0.5;
-    ij.zw = ij.xy + 1.0;
-    vec2 fuv = position - ij.xy;
-
-    vec4 uv = ij / tSize.xyxy;
-    vec4 a = texture(sam, uv.xy);
-    vec4 b = texture(sam, uv.zy);
-    vec4 c = texture(sam, uv.xw);
-    vec4 d = texture(sam, uv.zw);
-
-
-    return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
-}
-
-vec4 bilerp(sampler2D sam, vec2 uv, vec2 tsize) {
-    vec2 st = uv / tsize - 0.5;
-    vec2 iuv = floor(st);
-    vec2 fuv = fract(st);
+vec4 bilerp(sampler2D sampler, vec2 uv, vec2 size) {
+    vec2 st = uv * size - 0.5; // Not sure about the - 0.5
+    vec2 int_uv = floor(st);
+    vec2 frac_uv = fract(st);
 	
-    vec4 a = texture(sam, (iuv + vec2(0.5, 0.5)) * tsize);
-    vec4 b = texture(sam, (iuv + vec2(1.5, 0.5)) * tsize);
-    vec4 c = texture(sam, (iuv + vec2(0.5, 1.5)) * tsize);
-    vec4 d = texture(sam, (iuv + vec2(1.5, 1.5)) * tsize);
-    return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);
+    vec4 a = texture(sampler, (int_uv + vec2(0.5, 0.5)) / size);
+    vec4 b = texture(sampler, (int_uv + vec2(1.5, 0.5)) / size);
+    vec4 c = texture(sampler, (int_uv + vec2(0.5, 1.5)) / size);
+    vec4 d = texture(sampler, (int_uv + vec2(1.5, 1.5)) / size);
+    return mix(mix(a, b, frac_uv.x), mix(c, d, frac_uv.x), frac_uv.y);
 }
 
 void fragment()
 {
-	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, texelSize).xy * texelSize;
-	vec4 result = bilerp(advected, coord, dyeTexelSize);
-	float decay = 1.0 + dissipation * deltaTime;
-	COLOR = result / decay;
-}
-
-/*
-void fragment()
-{
-    vec2 uv = UV.xy / gridSize.xy;
-    float scale = 1.0 / gridScale;
-
-    // trace point back in time
-    vec2 p = UV.xy - timestep * scale * texture(velocity, uv).xy;
-
-    COLOR = vec4(dissipation * bilerp(advected, p), 0.0, 1.0);
-}
-*/"
+	vec2 velocityTexelSize = 1.0 / velocitySize;
+	vec2 advectedTexelSize = 1.0 / advectedSize;
+	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, velocitySize).xy * velocityTexelSize;
+	COLOR = bilerp(advected, coord, advectedSize);
+}"

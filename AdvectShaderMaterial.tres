@@ -5,8 +5,7 @@
 
 [resource]
 shader = ExtResource( 2 )
-shader_param/texelSize = Vector2( 1, 1 )
-shader_param/dyeTexelSize = Vector2( 0.01, 0.01 )
+shader_param/velocitySize = null
+shader_param/advectedSize = null
 shader_param/deltaTime = 0.001
-shader_param/dissipation = 0.0
 shader_param/advected = ExtResource( 1 )
