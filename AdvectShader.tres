@@ -8,27 +8,24 @@ This shader is under MIT license.
 shader_type canvas_item;
 
 uniform highp sampler2D velocity;
-uniform highp sampler2D advected;
 uniform vec2 velocitySize;
-uniform vec2 advectedSize;
 uniform highp float deltaTime;
 
-vec4 bilerp(sampler2D sampler, vec2 uv, vec2 size) {
-    vec2 st = uv * size - 0.5; // Not sure about the - 0.5
+vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
+    vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
     vec2 int_uv = floor(st);
     vec2 frac_uv = fract(st);
 	
-    vec4 a = texture(sampler, (int_uv + vec2(0.5, 0.5)) / size);
-    vec4 b = texture(sampler, (int_uv + vec2(1.5, 0.5)) / size);
-    vec4 c = texture(sampler, (int_uv + vec2(0.5, 1.5)) / size);
-    vec4 d = texture(sampler, (int_uv + vec2(1.5, 1.5)) / size);
+    vec4 a = texture(sampler, (int_uv + vec2(0.5, 0.5)) * texelSize);
+    vec4 b = texture(sampler, (int_uv + vec2(1.5, 0.5)) * texelSize);
+    vec4 c = texture(sampler, (int_uv + vec2(0.5, 1.5)) * texelSize);
+    vec4 d = texture(sampler, (int_uv + vec2(1.5, 1.5)) * texelSize);
     return mix(mix(a, b, frac_uv.x), mix(c, d, frac_uv.x), frac_uv.y);
 }
 
 void fragment()
 {
 	vec2 velocityTexelSize = 1.0 / velocitySize;
-	vec2 advectedTexelSize = 1.0 / advectedSize;
-	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, velocitySize).xy * velocityTexelSize;
-	COLOR = bilerp(advected, coord, advectedSize);
+	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, velocityTexelSize).xy * velocityTexelSize;
+	COLOR = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
 }"
