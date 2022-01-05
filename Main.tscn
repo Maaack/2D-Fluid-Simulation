@@ -1,11 +1,25 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://AdvectShader.tres" type="Shader" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
-[ext_resource path="res://JacobiVector.tres" type="Shader" id=3]
 [ext_resource path="res://VelocityViewport.gd" type="Script" id=4]
 [ext_resource path="res://DyeViewport.gd" type="Script" id=5]
 [ext_resource path="res://Main.gd" type="Script" id=6]
+[ext_resource path="res://JacobiVectorShaderMaterial.tres" type="Material" id=7]
+[ext_resource path="res://NestedViewportControl.tscn" type="PackedScene" id=8]
+
+[sub_resource type="ViewportTexture" id=15]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ShaderMaterial" id=7]
+resource_local_to_scene = true
+shader = ExtResource( 1 )
+shader_param/velocitySize = Vector2( 64, 64 )
+shader_param/deltaTime = null
+shader_param/velocity = SubResource( 15 )
+
+[sub_resource type="ViewportTexture" id=16]
+viewport_path = NodePath("VelocityViewport")
 
 [sub_resource type="ViewportTexture" id=13]
 viewport_path = NodePath("VelocityViewport")
@@ -20,17 +34,7 @@ shader_param/velocity = SubResource( 13 )
 [sub_resource type="ViewportTexture" id=14]
 viewport_path = NodePath("DyeViewport")
 
-[sub_resource type="ViewportTexture" id=15]
-viewport_path = NodePath("VelocityViewport")
-
-[sub_resource type="ShaderMaterial" id=7]
-resource_local_to_scene = true
-shader = ExtResource( 1 )
-shader_param/velocitySize = Vector2( 64, 64 )
-shader_param/deltaTime = null
-shader_param/velocity = SubResource( 15 )
-
-[sub_resource type="ViewportTexture" id=16]
+[sub_resource type="ViewportTexture" id=18]
 viewport_path = NodePath("VelocityViewport")
 
 [sub_resource type="ViewportTexture" id=9]
@@ -49,17 +53,39 @@ viewport_path = NodePath("DyeViewport")
 [sub_resource type="ViewportTexture" id=8]
 viewport_path = NodePath("VelocityViewport")
 
-[sub_resource type="ShaderMaterial" id=11]
-resource_local_to_scene = true
-shader = ExtResource( 3 )
-shader_param/alpha = 1.0
-shader_param/beta = 1.0
-
 [sub_resource type="ViewportTexture" id=17]
-viewport_path = NodePath("VelocityViewport")
+viewport_path = NodePath("NestedViewportControl")
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node"]
 script = ExtResource( 6 )
+
+[node name="VelocityViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+transparent_bg = true
+usage = 0
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+script = ExtResource( 4 )
+
+[node name="Icon2" type="Node2D" parent="VelocityViewport"]
+
+[node name="Icon2" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 1, 0, 0, 1 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Icon3" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 0, 1, 0, 1 )
+texture = ExtResource( 2 )
+centered = false
+offset = Vector2( 32, 32 )
+
+[node name="Icon" type="Sprite" parent="VelocityViewport"]
+visible = false
+material = SubResource( 7 )
+position = Vector2( 32, 32 )
+texture = SubResource( 16 )
 
 [node name="DyeViewport" type="Viewport" parent="."]
 size = Vector2( 64, 64 )
@@ -80,33 +106,11 @@ material = SubResource( 3 )
 position = Vector2( 32, 32 )
 texture = SubResource( 14 )
 
-[node name="VelocityViewport" type="Viewport" parent="."]
-size = Vector2( 64, 64 )
-transparent_bg = true
-usage = 0
+[node name="NestedViewportControl" parent="." instance=ExtResource( 8 )]
 render_target_v_flip = true
-render_target_clear_mode = 2
-render_target_update_mode = 3
-script = ExtResource( 4 )
-
-[node name="Icon2" type="Node2D" parent="VelocityViewport"]
-
-[node name="Icon2" type="Sprite" parent="VelocityViewport/Icon2"]
-modulate = Color( 2.3, 0, 0, 1 )
-texture = ExtResource( 2 )
-centered = false
-
-[node name="Icon3" type="Sprite" parent="VelocityViewport/Icon2"]
-modulate = Color( 0, 2.3, 0, 1 )
-texture = ExtResource( 2 )
-centered = false
-offset = Vector2( 32, 32 )
-
-[node name="Icon" type="Sprite" parent="VelocityViewport"]
-visible = false
-material = SubResource( 7 )
-position = Vector2( 32, 32 )
-texture = SubResource( 16 )
+levels = 2
+shader_material = ExtResource( 7 )
+texture = SubResource( 18 )
 
 [node name="Icon" type="Sprite" parent="."]
 material = SubResource( 10 )
@@ -125,7 +129,6 @@ scale = Vector2( 4, 4 )
 texture = SubResource( 8 )
 
 [node name="ViewportIcon3" type="Sprite" parent="."]
-material = SubResource( 11 )
 position = Vector2( 128, 430 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 17 )

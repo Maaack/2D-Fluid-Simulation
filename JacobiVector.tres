@@ -7,13 +7,14 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-uniform float alpha;
-uniform float beta;
+uniform float viscosity;
+uniform highp float deltaTime;
 
-vec2 jacobi(sampler2D x, sampler2D b, vec2 uv, vec2 texelSize)
+vec2 jacobi(sampler2D x, sampler2D b, float alpha, float beta, vec2 uv, vec2 texelSize)
 {
     vec2 xOffset = vec2(texelSize.x, 0.0);
     vec2 yOffset = vec2(0.0, texelSize.y);
+
 
     vec2 xl = texture(x, uv - xOffset).xy;
     vec2 xr = texture(x, uv + xOffset).xy;
@@ -28,8 +29,12 @@ vec2 jacobi(sampler2D x, sampler2D b, vec2 uv, vec2 texelSize)
 void fragment()
 {
 	vec2 velocity;
-	//for (int i = 0; i < 10; i++) {
-	velocity = jacobi(TEXTURE, TEXTURE, UV, TEXTURE_PIXEL_SIZE);
-	//}
-	COLOR = vec4(velocity, 0.0, 1.0);
-}"
+	vec2 size = 1.0 / TEXTURE_PIXEL_SIZE;
+	if (viscosity != 0.0){
+		float alpha = (size.x * size.x) / (viscosity * deltaTime);
+		float beta = alpha + 4.0;
+		velocity = jacobi(TEXTURE, TEXTURE, alpha, beta, UV, TEXTURE_PIXEL_SIZE);
+		COLOR = vec4(velocity, 0.0, 1.0);
+	}
+}
+"
