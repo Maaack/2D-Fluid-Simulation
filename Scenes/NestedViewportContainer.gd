@@ -1,7 +1,7 @@
 extends ViewportContainer
 
 func add_level():
-	var instance = load("res://NestedViewportContainer.tscn").instance()
+	var instance = load("res://Scenes/NestedViewportContainer.tscn").instance()
 	$Viewport.add_child(instance)
 	return instance
 

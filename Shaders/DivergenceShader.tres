@@ -1,0 +1,22 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+void fragment () {
+	vec2 xOffset = vec2(TEXTURE_PIXEL_SIZE.x, 0.0);
+	vec2 yOffset = vec2(0.0, TEXTURE_PIXEL_SIZE.y);
+
+	float rightX = texture(TEXTURE, UV + xOffset).x;
+	float leftX = texture(TEXTURE, UV - xOffset).x;
+	float topY = texture(TEXTURE, UV + yOffset).y;
+	float bottomY = texture(TEXTURE, UV - yOffset).y;
+	
+	float div = 0.5 * (rightX - leftX + topY - bottomY);
+	COLOR = vec4(div, 0.0, 0.0, 1.0);
+}
+"

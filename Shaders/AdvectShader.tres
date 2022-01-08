@@ -12,15 +12,15 @@ uniform vec2 velocitySize;
 uniform highp float deltaTime;
 
 vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
-    vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
-    vec2 int_uv = floor(st);
-    vec2 frac_uv = fract(st);
-	
-    vec4 a = texture(sampler, (int_uv + vec2(0.5, 0.5)) * texelSize);
-    vec4 b = texture(sampler, (int_uv + vec2(1.5, 0.5)) * texelSize);
-    vec4 c = texture(sampler, (int_uv + vec2(0.5, 1.5)) * texelSize);
-    vec4 d = texture(sampler, (int_uv + vec2(1.5, 1.5)) * texelSize);
-    return mix(mix(a, b, frac_uv.x), mix(c, d, frac_uv.x), frac_uv.y);
+	vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
+	vec2 uvInt = floor(st);
+	vec2 uvFrac = fract(st);
+
+	vec4 a = texture(sampler, (uvInt + vec2(0.5, 0.5)) * texelSize);
+	vec4 b = texture(sampler, (uvInt + vec2(1.5, 0.5)) * texelSize);
+	vec4 c = texture(sampler, (uvInt + vec2(0.5, 1.5)) * texelSize);
+	vec4 d = texture(sampler, (uvInt + vec2(1.5, 1.5)) * texelSize);
+	return mix(mix(a, b, uvFrac.x), mix(c, d, uvFrac.x), uvFrac.y);
 }
 
 void fragment()

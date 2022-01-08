@@ -1,0 +1,25 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform highp sampler2D velocity;
+
+void fragment() {
+	vec2 xOffset = vec2(TEXTURE_PIXEL_SIZE.x, 0.0);
+	vec2 yOffset = vec2(0.0, TEXTURE_PIXEL_SIZE.y);
+
+	float rightX = texture(TEXTURE, UV + xOffset).x;
+	float leftX = texture(TEXTURE, UV - xOffset).x;
+	float topX = texture(TEXTURE, UV + yOffset).x;
+	float bottomX = texture(TEXTURE, UV - yOffset).x;
+	
+	vec2 velXY = texture(velocity, UV).xy;
+	velXY.xy -= vec2(rightX - leftX, topX - bottomX);
+	COLOR = vec4(velXY, 0.0, 1.0);
+}
+"

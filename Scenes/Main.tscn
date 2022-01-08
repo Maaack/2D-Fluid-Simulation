@@ -1,0 +1,227 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
+[ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
+[ext_resource path="res://Shaders/GradientSubtractionShader.tres" type="Shader" id=3]
+[ext_resource path="res://Shaders/PressureShader.tres" type="Shader" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://Scenes/PressureViewport.gd" type="Script" id=6]
+[ext_resource path="res://Shaders/DivergenceShaderMaterial.tres" type="Material" id=7]
+[ext_resource path="res://Shaders/ViscosityShaderMaterial.tres" type="Material" id=8]
+[ext_resource path="res://Shaders/AdvectShader.tres" type="Shader" id=9]
+[ext_resource path="res://Scenes/NestedViewportControl.tscn" type="PackedScene" id=10]
+
+[sub_resource type="ShaderMaterial" id=55]
+resource_local_to_scene = true
+shader = ExtResource( 9 )
+shader_param/velocitySize = Vector2( 64, 64 )
+shader_param/deltaTime = 0.001
+
+[sub_resource type="ViewportTexture" id=54]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ViewportTexture" id=36]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ViewportTexture" id=18]
+viewport_path = NodePath("VelocityViewport")
+
+[sub_resource type="ViewportTexture" id=37]
+viewport_path = NodePath("ViscosityViewport")
+
+[sub_resource type="ViewportTexture" id=20]
+viewport_path = NodePath("ViscosityViewport")
+
+[sub_resource type="ViewportTexture" id=25]
+viewport_path = NodePath("DivergenceViewport")
+
+[sub_resource type="ViewportTexture" id=49]
+viewport_path = NodePath("DivergenceViewport")
+
+[sub_resource type="ShaderMaterial" id=27]
+resource_local_to_scene = true
+shader = ExtResource( 4 )
+shader_param/divergence = SubResource( 49 )
+
+[sub_resource type="ViewportTexture" id=42]
+viewport_path = NodePath("ViscosityViewport")
+
+[sub_resource type="ShaderMaterial" id=30]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/velocity = SubResource( 42 )
+
+[sub_resource type="ViewportTexture" id=50]
+viewport_path = NodePath("PressureViewport")
+
+[sub_resource type="ViewportTexture" id=48]
+viewport_path = NodePath("PressureViewport")
+
+[sub_resource type="ViewportTexture" id=21]
+viewport_path = NodePath("GradientSubtractionViewport")
+
+[sub_resource type="ViewportTexture" id=32]
+viewport_path = NodePath("GradientSubtractionViewport")
+
+[sub_resource type="ShaderMaterial" id=10]
+resource_local_to_scene = true
+shader = ExtResource( 9 )
+shader_param/velocitySize = Vector2( 64, 64 )
+shader_param/deltaTime = 2.0
+shader_param/velocity = SubResource( 32 )
+
+[sub_resource type="ViewportTexture" id=33]
+viewport_path = NodePath("GradientSubtractionViewport")
+
+[sub_resource type="ShaderMaterial" id=3]
+resource_local_to_scene = true
+shader = ExtResource( 9 )
+shader_param/velocitySize = Vector2( 64, 64 )
+shader_param/deltaTime = 0.001
+shader_param/velocity = SubResource( 33 )
+
+[sub_resource type="ViewportTexture" id=34]
+viewport_path = NodePath("DyeViewport")
+
+[sub_resource type="ViewportTexture" id=52]
+viewport_path = NodePath("GradientSubtractionViewport")
+
+[sub_resource type="ShaderMaterial" id=53]
+resource_local_to_scene = true
+shader = ExtResource( 9 )
+shader_param/velocitySize = Vector2( 64, 64 )
+shader_param/deltaTime = 0.001
+shader_param/velocity = SubResource( 52 )
+
+[sub_resource type="ViewportTexture" id=35]
+viewport_path = NodePath("DyeViewport")
+
+[node name="Main" type="Node"]
+script = ExtResource( 1 )
+
+[node name="VelocityViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+transparent_bg = true
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+
+[node name="Icon2" type="Node2D" parent="VelocityViewport"]
+
+[node name="Icon2" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 3, 0, 0, 1 )
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( -32, -32 )
+
+[node name="Icon3" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 0, 3, 0, 1 )
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 32, -32 )
+
+[node name="Icon4" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 3, 0, 0, 1 )
+material = ExtResource( 2 )
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( 32, 32 )
+
+[node name="Icon5" type="Sprite" parent="VelocityViewport/Icon2"]
+modulate = Color( 0, 3, 0, 1 )
+material = ExtResource( 2 )
+texture = ExtResource( 5 )
+centered = false
+offset = Vector2( -32, 32 )
+
+[node name="Icon" type="Sprite" parent="VelocityViewport"]
+visible = false
+material = SubResource( 55 )
+texture = SubResource( 54 )
+centered = false
+
+[node name="VelocityIcon" type="Sprite" parent="."]
+position = Vector2( 128, 128 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 36 )
+
+[node name="ViscosityViewport" parent="." instance=ExtResource( 10 )]
+render_target_v_flip = true
+levels = 20
+shader_material = ExtResource( 8 )
+texture = SubResource( 18 )
+
+[node name="ViscosityIcon" type="Sprite" parent="."]
+position = Vector2( 384, 128 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 37 )
+
+[node name="DivergenceViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+render_target_v_flip = true
+
+[node name="Sprite" type="Sprite" parent="DivergenceViewport"]
+material = ExtResource( 7 )
+texture = SubResource( 20 )
+offset = Vector2( 32, 32 )
+
+[node name="DivergenceIcon" type="Sprite" parent="."]
+position = Vector2( 640, 128 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 25 )
+
+[node name="PressureViewport" parent="." instance=ExtResource( 10 )]
+size = Vector2( 64, 64 )
+handle_input_locally = false
+script = ExtResource( 6 )
+levels = 100
+shader_material = SubResource( 27 )
+
+[node name="GradientSubtractionViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+render_target_v_flip = true
+
+[node name="Sprite" type="Sprite" parent="GradientSubtractionViewport"]
+material = SubResource( 30 )
+texture = SubResource( 50 )
+offset = Vector2( 32, 32 )
+
+[node name="PressureIcon" type="Sprite" parent="."]
+position = Vector2( 896, 128 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 48 )
+
+[node name="GradientSubtractionIcon" type="Sprite" parent="."]
+position = Vector2( 128, 448 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 21 )
+
+[node name="Icon" type="Sprite" parent="."]
+visible = false
+material = SubResource( 10 )
+position = Vector2( 821, 198 )
+scale = Vector2( 6.05469, 6.20313 )
+texture = ExtResource( 5 )
+
+[node name="DyeViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+transparent_bg = true
+render_target_v_flip = true
+render_target_clear_mode = 2
+render_target_update_mode = 3
+
+[node name="Icon2" type="Sprite" parent="DyeViewport"]
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Icon" type="Sprite" parent="DyeViewport"]
+visible = false
+material = SubResource( 3 )
+position = Vector2( 32, 32 )
+texture = SubResource( 34 )
+
+[node name="DyeViewportIcon" type="Sprite" parent="."]
+material = SubResource( 53 )
+position = Vector2( 384, 448 )
+scale = Vector2( 4, 4 )
+texture = SubResource( 35 )
