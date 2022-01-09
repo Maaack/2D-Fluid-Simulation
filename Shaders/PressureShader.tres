@@ -26,8 +26,7 @@ vec2 jacobi(sampler2D x, sampler2D b, float alpha, float beta, vec2 uv, vec2 tex
 
 void fragment()
 {
-	vec2 velocity;
-	velocity = jacobi(TEXTURE, divergence, -1, 4, UV, TEXTURE_PIXEL_SIZE);
-	COLOR = vec4(velocity, 0.0, 1.0);
+	vec2 velocity = jacobi(TEXTURE, divergence, -1, 4, UV, TEXTURE_PIXEL_SIZE);
+	COLOR = vec4(velocity, -velocity.r, 1.0);
 }
 "

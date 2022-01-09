@@ -1,0 +1,17 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+void fragment ()
+{
+	vec4 color = texture(TEXTURE, UV);
+	float minColor = min(min(min(0, color.r), color.g), color.b);
+	vec3 colorAdjust = vec3(minColor);
+	COLOR = vec4(color.rgb - colorAdjust, color.a);
+}
+"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Shaders/ViscosityShaderMaterial.tres" type="Material" id=8]
 [ext_resource path="res://Shaders/AdvectShader.tres" type="Shader" id=9]
 [ext_resource path="res://Scenes/NestedViewportControl.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Shaders/ShowNegativeColorShaderMaterial.tres" type="Material" id=11]
 
 [sub_resource type="ShaderMaterial" id=55]
 resource_local_to_scene = true
@@ -17,7 +18,7 @@ shader = ExtResource( 9 )
 shader_param/velocitySize = Vector2( 64, 64 )
 shader_param/deltaTime = 0.001
 
-[sub_resource type="ViewportTexture" id=54]
+[sub_resource type="ViewportTexture" id=56]
 viewport_path = NodePath("VelocityViewport")
 
 [sub_resource type="ViewportTexture" id=36]
@@ -103,7 +104,7 @@ script = ExtResource( 1 )
 size = Vector2( 64, 64 )
 transparent_bg = true
 render_target_v_flip = true
-render_target_clear_mode = 2
+render_target_clear_mode = 1
 render_target_update_mode = 3
 
 [node name="Icon2" type="Node2D" parent="VelocityViewport"]
@@ -137,22 +138,24 @@ offset = Vector2( -32, 32 )
 [node name="Icon" type="Sprite" parent="VelocityViewport"]
 visible = false
 material = SubResource( 55 )
-texture = SubResource( 54 )
+texture = SubResource( 56 )
 centered = false
 
 [node name="VelocityIcon" type="Sprite" parent="."]
-position = Vector2( 128, 128 )
+material = ExtResource( 11 )
+position = Vector2( 160, 160 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 36 )
 
 [node name="ViscosityViewport" parent="." instance=ExtResource( 10 )]
 render_target_v_flip = true
-levels = 20
+levels = 10
 shader_material = ExtResource( 8 )
 texture = SubResource( 18 )
 
 [node name="ViscosityIcon" type="Sprite" parent="."]
-position = Vector2( 384, 128 )
+material = ExtResource( 11 )
+position = Vector2( 480, 160 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 37 )
 
@@ -166,7 +169,8 @@ texture = SubResource( 20 )
 offset = Vector2( 32, 32 )
 
 [node name="DivergenceIcon" type="Sprite" parent="."]
-position = Vector2( 640, 128 )
+material = ExtResource( 11 )
+position = Vector2( 800, 160 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 25 )
 
@@ -174,7 +178,7 @@ texture = SubResource( 25 )
 size = Vector2( 64, 64 )
 handle_input_locally = false
 script = ExtResource( 6 )
-levels = 100
+levels = 32
 shader_material = SubResource( 27 )
 
 [node name="GradientSubtractionViewport" type="Viewport" parent="."]
@@ -187,12 +191,13 @@ texture = SubResource( 50 )
 offset = Vector2( 32, 32 )
 
 [node name="PressureIcon" type="Sprite" parent="."]
-position = Vector2( 896, 128 )
+position = Vector2( 1120, 160 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 48 )
 
 [node name="GradientSubtractionIcon" type="Sprite" parent="."]
-position = Vector2( 128, 448 )
+material = ExtResource( 11 )
+position = Vector2( 160, 544 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 21 )
 
@@ -222,6 +227,85 @@ texture = SubResource( 34 )
 
 [node name="DyeViewportIcon" type="Sprite" parent="."]
 material = SubResource( 53 )
-position = Vector2( 384, 448 )
+position = Vector2( 480, 544 )
 scale = Vector2( 4, 4 )
 texture = SubResource( 35 )
+
+[node name="RefreshVelocityButton" type="Button" parent="."]
+margin_left = 64.0
+margin_top = 296.0
+margin_right = 124.0
+margin_bottom = 316.0
+text = "Refresh"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SwitchVelocityButton" type="Button" parent="."]
+margin_left = 192.0
+margin_top = 296.0
+margin_right = 252.0
+margin_bottom = 316.0
+text = "Switch"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RefreshDyeButton" type="Button" parent="."]
+margin_left = 512.0
+margin_top = 680.0
+margin_right = 572.0
+margin_bottom = 700.0
+text = "Refresh"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PressureLevelSpinBox" type="SpinBox" parent="."]
+margin_left = 1168.0
+margin_top = 296.0
+margin_right = 1242.0
+margin_bottom = 320.0
+min_value = 1.0
+value = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViscosityLevelSpinBox" type="SpinBox" parent="."]
+margin_left = 528.0
+margin_top = 296.0
+margin_right = 602.0
+margin_bottom = 320.0
+min_value = 1.0
+max_value = 50.0
+value = 10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 376.0
+margin_top = 300.0
+margin_right = 560.0
+margin_bottom = 314.0
+text = "Shader \"Multi-passes\""
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 1016.0
+margin_top = 300.0
+margin_right = 1200.0
+margin_bottom = 314.0
+text = "Shader \"Multi-passes\""
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
+[connection signal="pressed" from="SwitchVelocityButton" to="." method="_on_SwitchVelocityButton_pressed"]
+[connection signal="pressed" from="RefreshDyeButton" to="." method="_on_RefreshDyeButton_pressed"]
+[connection signal="value_changed" from="PressureLevelSpinBox" to="." method="_on_PressureLevelSpinBox_value_changed"]
+[connection signal="value_changed" from="ViscosityLevelSpinBox" to="." method="_on_ViscosityLevelSpinBox_value_changed"]
