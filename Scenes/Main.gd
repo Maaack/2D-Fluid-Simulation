@@ -32,6 +32,7 @@ func _ready():
 func _process(delta):
 	$DyeViewport/Icon.material.set_shader_param("deltaTime", delta)
 	$VelocityViewport/Icon.material.set_shader_param("deltaTime", delta)
+	$ViscosityViewport.set_shader_param("deltaTime", delta)
 
 func _on_RefreshVelocityButton_pressed():
 	_refresh_velocity()
@@ -47,3 +48,6 @@ func _on_PressureLevelSpinBox_value_changed(value):
 
 func _on_ViscosityLevelSpinBox_value_changed(value):
 	$ViscosityViewport.levels = value
+
+func _on_ViscosityMeasureSpinBox_value_changed(value):
+	$ViscosityViewport.set_shader_param("viscosity", value)

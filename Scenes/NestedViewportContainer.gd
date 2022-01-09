@@ -36,6 +36,9 @@ func add_levels(levels: int):
 func set_viewport_size(size : Vector2) -> void:
 	$Viewport.size = size
 
-func _process(delta):
+func set_shader_param(key : String, value) -> void:
 	if is_instance_valid(material):
-		material.set_shader_param("deltaTime", delta)
+		material.set_shader_param(key, value)
+	if is_instance_valid(viewport_child):
+		if viewport_child is ViewportContainer:
+			viewport_child.set_shader_param(key, value)

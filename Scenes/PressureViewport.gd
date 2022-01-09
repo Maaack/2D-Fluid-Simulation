@@ -5,7 +5,7 @@ export(Material) var shader_material : Material
 
 var allow_edits : bool = false
 var nested_viewport_scene : PackedScene = preload("res://Scenes/NestedViewportContainer.tscn")
-var nested_viewport_instance : Node
+var nested_viewport_instance : ViewportContainer
 
 func _add_level():
 	if is_instance_valid(nested_viewport_instance):
@@ -33,3 +33,8 @@ func set_levels(value : int) -> void:
 func _ready():
 	allow_edits = true
 	_reset_levels()
+
+func set_shader_param(key : String, value) -> void:
+	if not is_instance_valid(nested_viewport_instance):
+		return
+	nested_viewport_instance.set_shader_param(key, value)

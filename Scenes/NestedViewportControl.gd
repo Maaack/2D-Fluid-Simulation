@@ -36,3 +36,8 @@ func _ready():
 	allow_edits = true
 	size = texture.get_size()
 	_reset_levels()
+
+func set_shader_param(key : String, value) -> void:
+	if not is_instance_valid(nested_viewport_instance):
+		return
+	nested_viewport_instance.set_shader_param(key, value)
