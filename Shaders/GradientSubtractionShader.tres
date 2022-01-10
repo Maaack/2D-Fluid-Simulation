@@ -19,7 +19,7 @@ void fragment() {
 	float bottomX = texture(TEXTURE, UV - yOffset).x;
 	
 	vec2 velXY = texture(velocity, UV).xy;
-	velXY.xy -= vec2(rightX - leftX, topX - bottomX);
+	velXY.xy -= vec2(rightX - leftX, topX - bottomX) * 0.5;
 	COLOR = vec4(velXY, 0.0, 1.0);
 }
 "
