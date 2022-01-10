@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
@@ -12,11 +12,15 @@
 [ext_resource path="res://Scenes/NestedViewportControl.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Shaders/ShowNegativeColorShaderMaterial.tres" type="Material" id=11]
 
+[sub_resource type="ViewportTexture" id=57]
+viewport_path = NodePath("VelocityViewport")
+
 [sub_resource type="ShaderMaterial" id=55]
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/velocitySize = Vector2( 64, 64 )
 shader_param/deltaTime = 0.001
+shader_param/velocity = SubResource( 57 )
 
 [sub_resource type="ViewportTexture" id=56]
 viewport_path = NodePath("VelocityViewport")
