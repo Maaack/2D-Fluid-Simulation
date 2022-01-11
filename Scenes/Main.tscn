@@ -1,16 +1,17 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Shaders/GradientSubtractionShader.tres" type="Shader" id=3]
 [ext_resource path="res://Shaders/PressureShader.tres" type="Shader" id=4]
-[ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://baseTexture.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/PressureViewport.gd" type="Script" id=6]
 [ext_resource path="res://Shaders/DivergenceShaderMaterial.tres" type="Material" id=7]
 [ext_resource path="res://Shaders/ViscosityShaderMaterial.tres" type="Material" id=8]
 [ext_resource path="res://Shaders/AdvectShader.tres" type="Shader" id=9]
 [ext_resource path="res://Scenes/NestedViewportControl.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Shaders/ShowNegativeColorShaderMaterial.tres" type="Material" id=11]
+[ext_resource path="res://Shaders/BorderConditionShader.tres" type="Shader" id=12]
 
 [sub_resource type="ViewportTexture" id=57]
 viewport_path = NodePath("VelocityViewport")
@@ -31,11 +32,18 @@ viewport_path = NodePath("VelocityViewport")
 [sub_resource type="ViewportTexture" id=18]
 viewport_path = NodePath("VelocityViewport")
 
-[sub_resource type="ViewportTexture" id=37]
+[sub_resource type="ShaderMaterial" id=59]
+shader = ExtResource( 12 )
+shader_param/scale = -1.0
+
+[sub_resource type="ViewportTexture" id=58]
 viewport_path = NodePath("ViscosityViewport")
 
-[sub_resource type="ViewportTexture" id=20]
-viewport_path = NodePath("ViscosityViewport")
+[sub_resource type="ViewportTexture" id=66]
+viewport_path = NodePath("VelocityBorderViewport")
+
+[sub_resource type="ViewportTexture" id=63]
+viewport_path = NodePath("VelocityBorderViewport")
 
 [sub_resource type="ViewportTexture" id=25]
 viewport_path = NodePath("DivergenceViewport")
@@ -48,6 +56,13 @@ resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/divergence = SubResource( 49 )
 
+[sub_resource type="ShaderMaterial" id=61]
+shader = ExtResource( 12 )
+shader_param/scale = 1.0
+
+[sub_resource type="ViewportTexture" id=60]
+viewport_path = NodePath("PressureViewport")
+
 [sub_resource type="ViewportTexture" id=42]
 viewport_path = NodePath("ViscosityViewport")
 
@@ -56,11 +71,11 @@ resource_local_to_scene = true
 shader = ExtResource( 3 )
 shader_param/velocity = SubResource( 42 )
 
-[sub_resource type="ViewportTexture" id=50]
-viewport_path = NodePath("PressureViewport")
+[sub_resource type="ViewportTexture" id=64]
+viewport_path = NodePath("PressureBorderViewport")
 
-[sub_resource type="ViewportTexture" id=48]
-viewport_path = NodePath("PressureViewport")
+[sub_resource type="ViewportTexture" id=65]
+viewport_path = NodePath("PressureBorderViewport")
 
 [sub_resource type="ViewportTexture" id=21]
 viewport_path = NodePath("GradientSubtractionViewport")
@@ -157,11 +172,21 @@ levels = 10
 shader_material = ExtResource( 8 )
 texture = SubResource( 18 )
 
+[node name="VelocityBorderViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+render_target_v_flip = true
+render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite" parent="VelocityBorderViewport"]
+material = SubResource( 59 )
+texture = SubResource( 58 )
+centered = false
+
 [node name="ViscosityIcon" type="Sprite" parent="."]
 material = ExtResource( 11 )
 position = Vector2( 640, 160 )
 scale = Vector2( 4, 4 )
-texture = SubResource( 37 )
+texture = SubResource( 66 )
 
 [node name="DivergenceViewport" type="Viewport" parent="."]
 size = Vector2( 64, 64 )
@@ -169,8 +194,8 @@ render_target_v_flip = true
 
 [node name="Sprite" type="Sprite" parent="DivergenceViewport"]
 material = ExtResource( 7 )
-texture = SubResource( 20 )
-offset = Vector2( 32, 32 )
+texture = SubResource( 63 )
+centered = false
 
 [node name="DivergenceIcon" type="Sprite" parent="."]
 material = ExtResource( 11 )
@@ -185,19 +210,29 @@ script = ExtResource( 6 )
 levels = 32
 shader_material = SubResource( 27 )
 
+[node name="PressureBorderViewport" type="Viewport" parent="."]
+size = Vector2( 64, 64 )
+render_target_v_flip = true
+render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite" parent="PressureBorderViewport"]
+material = SubResource( 61 )
+texture = SubResource( 60 )
+centered = false
+
 [node name="GradientSubtractionViewport" type="Viewport" parent="."]
 size = Vector2( 64, 64 )
 render_target_v_flip = true
 
 [node name="Sprite" type="Sprite" parent="GradientSubtractionViewport"]
 material = SubResource( 30 )
-texture = SubResource( 50 )
+texture = SubResource( 64 )
 offset = Vector2( 32, 32 )
 
 [node name="PressureIcon" type="Sprite" parent="."]
 position = Vector2( 160, 544 )
 scale = Vector2( 4, 4 )
-texture = SubResource( 48 )
+texture = SubResource( 65 )
 
 [node name="GradientSubtractionIcon" type="Sprite" parent="."]
 material = ExtResource( 11 )
