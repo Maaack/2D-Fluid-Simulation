@@ -8,21 +8,31 @@ This shader is under MIT license.
 shader_type canvas_item;
 
 uniform float scale;
+uniform bool active = true;
+
+bool isOnBorder (vec2 uv, vec2 texelSize) {
+	return uv.x < texelSize.x || uv.x > 1.0 - texelSize.x || uv.y < texelSize.y || uv.y > 1.0 - texelSize.y;
+}
+
+vec2 borderAdjustment (vec2 uv, vec2 texelSize) {
+	uv.x = uv.x < texelSize.x ? uv.x + texelSize.x : uv.x;
+	uv.x = uv.x > 1.0 - texelSize.x ? uv.x - texelSize.x : uv.x;
+	uv.y = uv.y < texelSize.y ? uv.y + texelSize.y : uv.y;
+	uv.y = uv.y > 1.0 - texelSize.y ? uv.y - texelSize.y : uv.y;
+	return uv;
+}
+
+vec4 borderScale (sampler2D sampler, vec2 uv, vec2 texelSize) {
+	if (active && isOnBorder(uv, texelSize)){
+		uv = borderAdjustment(uv, texelSize);
+		vec4 color = texture(sampler, uv);
+		return vec4(color.rgb * scale, 1.0);
+	} else {
+		return texture(sampler, uv);
+	}
+}
 
 void fragment () {
-
-	float UVx = UV.x;
-	float UVy = UV.y;
-	if (UVx < TEXTURE_PIXEL_SIZE.x || UVx > 1.0 - TEXTURE_PIXEL_SIZE.x ||
-	    UVy < TEXTURE_PIXEL_SIZE.y || UVy > 1.0 - TEXTURE_PIXEL_SIZE.y) {
-		UVx = UVx < TEXTURE_PIXEL_SIZE.x ? UVx + TEXTURE_PIXEL_SIZE.x : UVx;
-		UVx = UVx > 1.0 - TEXTURE_PIXEL_SIZE.x ? UVx - TEXTURE_PIXEL_SIZE.x : UVx;
-		UVy = UVy < TEXTURE_PIXEL_SIZE.y ? UVy + TEXTURE_PIXEL_SIZE.y : UVy;
-		UVy = UVy > 1.0 - TEXTURE_PIXEL_SIZE.y ? UVy - TEXTURE_PIXEL_SIZE.y : UVy;
-		vec4 col = texture(TEXTURE, vec2(UVx, UVy));
-		COLOR = vec4(col.rgb * scale, 1.0);
-	} else {
-		COLOR = texture(TEXTURE, UV)
-	}
+	COLOR = borderScale(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
 }
 "

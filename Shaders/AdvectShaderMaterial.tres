@@ -5,4 +5,4 @@
 [resource]
 shader = ExtResource( 2 )
 shader_param/velocitySize = Vector2( 64, 64 )
-shader_param/deltaTime = 0.001
+shader_param/deltaTime = 0.05

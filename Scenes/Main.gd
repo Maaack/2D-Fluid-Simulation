@@ -51,3 +51,9 @@ func _on_ViscosityLevelSpinBox_value_changed(value):
 
 func _on_ViscosityMeasureSpinBox_value_changed(value):
 	$ViscosityViewport.set_shader_param("viscosity", value)
+
+func _on_VorticityMeasureSpinBox_value_changed(value):
+	$VelocityForcesViewport/Sprite.material.set_shader_param("vorticity", value)
+
+func _on_BordersOptionButton_toggled(button_pressed):
+	$VelocityBorderViewport/Sprite.material.set_shader_param("active", button_pressed)

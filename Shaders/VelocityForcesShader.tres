@@ -1,0 +1,39 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform float vorticity;
+uniform highp float deltaTime;
+
+float curl (sampler2D velocity, vec2 uv) {
+	float velocityTop = texture(velocity, uv + vec2(0.0, 1.0)).x;
+	float velocityBottom = texture(velocity, uv - vec2(0.0, 1.0)).x;
+	float velocityRight = texture(velocity, uv + vec2(1.0, 0.0)).y;
+	float velocityLeft = texture(velocity, uv - vec2(1.0, 0.0)).y;
+	return velocityTop - velocityBottom + velocityLeft - velocityRight;
+}
+
+vec2 vorticityForce (sampler2D velocity, vec2 uv) {
+	float curlTop = texture(velocity, uv + vec2(0.0, 1.0)).x;
+	float curlBottom = texture(velocity, uv - vec2(0.0, 1.0)).x;
+	float curlRight = texture(velocity, uv + vec2(1.0, 0.0)).y;
+	float curlLeft = texture(velocity, uv - vec2(1.0, 0.0)).y;
+	float curlCenter = curl(velocity, uv);
+	
+	vec2 force = vec2(abs(curlTop) - abs(curlBottom), abs(curlLeft) - abs(curlRight));
+	force /= (length(force) + 1e-5);
+ 	force *= vorticity * curlCenter;
+	vec2 velocityForce = texture(velocity, uv).xy;
+	velocityForce += force * deltaTime;
+	return velocityForce;
+}
+
+void fragment () {
+	COLOR = vec4(vorticityForce(TEXTURE, UV), 0.0, 1.0);
+}
+"
