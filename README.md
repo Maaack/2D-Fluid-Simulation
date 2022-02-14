@@ -2,9 +2,14 @@
 ### In progress  
 Made in Godot 3.4.2
 
-![Screenshot 01](./Assets/Screenshot_01.png)
-![Screenshot 02](./Assets/Screenshot_02.png)
-![Screenshot 03](./Assets/Screenshot_03.png)
+![Screenshot 01](./Assets/Screenshot_11.png)
+![Screenshot 02](./Assets/Screenshot_12.png)
+![Screenshot 03](./Assets/Screenshot_13.png)
+![Screenshot 03](./Assets/Screenshot_14.png)
+
+## Description
+
+A 2D fluid simulation implemented in Godot. The multi-pass solution is getting deprecated. A single-pass solution using a semi-lagrangian scheme (instead of the often referenced jacobi iterative method) is the focus of future development.
 
 ## Issues
 
@@ -18,6 +23,8 @@ Attempting to switch the source of the initial velocity texture from itself to t
 
 ## Reference Material
 * https://developer.download.nvidia.com/books/HTML/gpugems/gpugems_ch38.html
+* https://hal.inria.fr/inria-00596050/document
+* https://softologyblog.wordpress.com/2019/03/13/vorticity-confinement-for-eulerian-fluid-simulations/
 * https://www.ixm-ibrahim.com/explanations/2d-fluid-simulation
 * https://github.com/PavelDoGreat/WebGL-Fluid-Simulation
 * https://github.com/haxiomic/GPU-Fluid-Experiments
