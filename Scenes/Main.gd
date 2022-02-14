@@ -57,3 +57,8 @@ func _on_VorticityMeasureSpinBox_value_changed(value):
 
 func _on_BordersOptionButton_toggled(button_pressed):
 	$VelocityBorderViewport/Sprite.material.set_shader_param("active", button_pressed)
+
+func _on_MouseControl_force_applied(position, vector):
+	$VelocityForcesViewport/Sprite.material.set_shader_param("externalForceVector", vector)
+	$VelocityForcesViewport/Sprite.material.set_shader_param("externalForceUV", position)
+

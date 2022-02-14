@@ -7,11 +7,14 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-float divergence(sampler2D sampler, vec2 uv, vec2 texelSize, float scale)
+uniform float laplacianScale = 0.5;
+
+vec4 laplacianPass(sampler2D sampler, vec2 uv, vec2 texelSize)
 {
 	vec2 xOffset = vec2(texelSize.x, 0.0);
 	vec2 yOffset = vec2(0.0, texelSize.y);
-
+	
+	vec4 center = texture(sampler, uv);
 	vec4 left = texture(sampler, uv - xOffset);
 	vec4 right = texture(sampler, uv + xOffset);
 	vec4 bottom = texture(sampler, uv - yOffset);
@@ -21,13 +24,14 @@ float divergence(sampler2D sampler, vec2 uv, vec2 texelSize, float scale)
 	vec4 duDx = (right - left);
 	vec4 duDy = (top - bottom);
 	
-	float div = (duDx.x + duDy.y) * scale;
-	
-	return div;
-	
+	vec2 dotProduct = vec2(right.x + left.x + top.x + bottom.x, right.y + left.y + top.y + bottom.y);
+	vec2 laplacian = dotProduct - (4.0 * center.xy);
+	vec2 viscosityForce = laplacian * laplacianScale;
+
+	return vec4(viscosityForce, 0.0, 1.0);
 }
 
-void fragment () {
-	COLOR = vec4(divergence(TEXTURE, UV, TEXTURE_PIXEL_SIZE, 0.5), 0.0, 0.0, 1.0);
-}
-"
+void fragment()
+{
+	COLOR = laplacianPass(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
+}"

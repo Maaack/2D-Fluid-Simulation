@@ -1,0 +1,53 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform float pressureScale = 0.5;
+
+vec4 jacobi(sampler2D velocitySampler, sampler2D divergenceSampler, float alpha, float beta, vec2 uv, vec2 texelSize)
+{
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+
+	vec2 xl = texture(velocitySampler, uv - xOffset).xy;
+	vec2 xr = texture(velocitySampler, uv + xOffset).xy;
+	vec2 xb = texture(velocitySampler, uv - yOffset).xy;
+	vec2 xt = texture(velocitySampler, uv + yOffset).xy;
+
+	vec2 div = texture(divergenceSampler, uv).xy;
+
+	return vec4((xl + xr + xb + xt - div) / 4.0, 0.0, 1.0);
+}
+
+vec4 pressureDeltaPass(sampler2D sampler, vec2 uv, vec2 texelSize)
+{
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+	
+	vec4 center = texture(sampler, uv);
+	vec4 left = texture(sampler, uv - xOffset);
+	vec4 right = texture(sampler, uv + xOffset);
+	vec4 bottom = texture(sampler, uv - yOffset);
+	vec4 top = texture(sampler, uv + yOffset);
+	
+	// du / dx , du / dy
+	vec4 duDx = (right - left);
+	vec4 duDy = (top - bottom);
+	
+	float div = (duDx.x + duDy.y) * 0.5;
+	vec2 pressureForce = -vec2(duDx.z, duDy.z) * pressureScale;
+	
+	float pressure = -dot(vec3(pressureForce, div), center.xyz);
+	
+	return vec4(pressure, 0.0, 0.0, 1.0);
+}
+
+void fragment()
+{
+	COLOR = pressureDeltaPass(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
+}"

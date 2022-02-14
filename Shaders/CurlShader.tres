@@ -1,0 +1,24 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+float curl(sampler2D velocity, vec2 uv, vec2 texelSize) {
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+	
+	float velocityTop = texture(velocity, uv + yOffset).x;
+	float velocityBottom = texture(velocity, uv - yOffset).x;
+	float velocityRight = texture(velocity, uv + xOffset).y;
+	float velocityLeft = texture(velocity, uv - xOffset).y;
+	return velocityTop - velocityBottom + velocityLeft - velocityRight;
+}
+
+void fragment()
+{
+	COLOR = vec4(curl(TEXTURE, UV, TEXTURE_PIXEL_SIZE), 0.0, 0.0, 1.0);
+}"

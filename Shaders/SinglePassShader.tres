@@ -1,0 +1,129 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform float vorticityScale = 5.0;
+uniform float laplacianScale = 0.5;
+uniform float pressureScale = 0.5;
+uniform float pressureMin = 0.5;
+uniform float pressureMax = 3.0;
+uniform float deltaTime = 0.05;
+uniform vec2 externalForceVector;
+uniform vec2 externalForceUV;
+uniform bool borderOn = true;
+
+vec4 getTransparentForBlack(vec4 color) {
+	return color == vec4(0.0, 0.0, 0.0, 1.0) ? vec4(color.rgb, 0.0) : color;
+}
+
+vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
+	vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
+	vec2 uvInt = floor(st);
+	vec2 uvFrac = fract(st);
+
+	vec4 a = texture(sampler, (uvInt + vec2(0.5, 0.5)) * texelSize);
+	vec4 b = texture(sampler, (uvInt + vec2(1.5, 0.5)) * texelSize);
+	vec4 c = texture(sampler, (uvInt + vec2(0.5, 1.5)) * texelSize);
+	vec4 d = texture(sampler, (uvInt + vec2(1.5, 1.5)) * texelSize);
+
+	return mix(mix(a, b, uvFrac.x), mix(c, d, uvFrac.x), uvFrac.y);
+}
+
+float curl (sampler2D velocity, vec2 uv, vec2 texelSize) {
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+	
+	float velocityTop = texture(velocity, uv + yOffset).x;
+	float velocityBottom = texture(velocity, uv - yOffset).x;
+	float velocityRight = texture(velocity, uv + xOffset).y;
+	float velocityLeft = texture(velocity, uv - xOffset).y;
+	return velocityTop - velocityBottom + velocityLeft - velocityRight;
+}
+
+vec2 vorticityForce  (sampler2D velocity, vec2 uv, vec2 texelSize) {
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+	
+	float curlTop = curl(velocity, uv + yOffset, texelSize);
+	float curlBottom = curl(velocity, uv - yOffset, texelSize);
+	float curlRight = curl(velocity, uv + xOffset, texelSize);
+	float curlLeft = curl(velocity, uv - xOffset, texelSize);
+	float curlCenter = curl(velocity, uv, texelSize);
+	
+	vec2 force = vec2(abs(curlTop) - abs(curlBottom), abs(curlLeft) - abs(curlRight));
+	force /= (length(force) + 1e-5);
+ 	force *= vorticityScale * curlCenter;
+	return force;
+}
+
+vec2 externalForce(vec2 uv){
+	if (distance(uv, externalForceUV) < 0.1) {
+		return externalForceVector;
+	}
+}
+
+vec4 velocityPass(sampler2D sampler, vec2 uv, vec2 texelSize)
+{
+	vec2 xOffset = vec2(texelSize.x, 0.0);
+	vec2 yOffset = vec2(0.0, texelSize.y);
+	
+	vec4 center = texture(sampler, uv);
+	vec4 left = texture(sampler, uv - xOffset);
+	vec4 right = texture(sampler, uv + xOffset);
+	vec4 bottom = texture(sampler, uv - yOffset);
+	vec4 top = texture(sampler, uv + yOffset);
+	
+	// du / dx , du / dy
+	vec4 duDx = (right - left);
+	vec4 duDy = (top - bottom);
+	
+	float div = (duDx.x + duDy.y) * 0.5;
+	vec2 pressureForce = -vec2(duDx.z, duDy.z) * pressureScale;
+	
+	center.z -= deltaTime * dot(vec3(pressureForce, div), center.xyz);
+	center.z = clamp(center.z, pressureMin, pressureMax);
+	
+	vec2 dotProduct = vec2(right.x + left.x + top.x + bottom.x, right.y + left.y + top.y + bottom.y);
+	vec2 laplacian = dotProduct - (4.0 * center.xy);
+	vec2 viscosityForce = laplacian * laplacianScale;
+
+	vec2 coord = uv - (deltaTime * center.xy);
+	vec4 finalColor = bilerp(sampler, coord, texelSize);
+	finalColor.z = center.z;
+	finalColor.xy += deltaTime * (viscosityForce + pressureForce + externalForce(uv) + vorticityForce(sampler, uv, texelSize)).xy;
+	return finalColor;
+}
+
+bool isOnBorder(vec2 uv, vec2 texelSize) {
+	return uv.x < texelSize.x || uv.x > 1.0 - texelSize.x || uv.y < texelSize.y || uv.y > 1.0 - texelSize.y;
+}
+
+vec2 borderAdjustment(vec2 uv, vec2 texelSize) {
+	uv.x = uv.x < texelSize.x ? uv.x + texelSize.x : uv.x;
+	uv.x = uv.x > 1.0 - texelSize.x ? uv.x - texelSize.x : uv.x;
+	uv.y = uv.y < texelSize.y ? uv.y + texelSize.y : uv.y;
+	uv.y = uv.y > 1.0 - texelSize.y ? uv.y - texelSize.y : uv.y;
+	return uv;
+}
+
+vec4 borderScale(vec4 color, sampler2D sampler, vec2 uv, vec2 texelSize, float scale) {
+	if (borderOn && isOnBorder(uv, texelSize)){
+		uv = borderAdjustment(uv, texelSize);
+		color = texture(sampler, uv);
+		return vec4(color.xy * scale, color.z, 1.0);
+	} else {
+		return color;
+	}
+}
+
+void fragment()
+{
+	vec4 final_color = velocityPass(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
+	//COLOR = final_color;
+	COLOR = borderScale(final_color, TEXTURE, UV, TEXTURE_PIXEL_SIZE, -1.0);
+}"
