@@ -1,0 +1,42 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform highp sampler2D velocity;
+uniform highp float deltaTime = 0.05;
+uniform vec4 dyeColor : hint_color = vec4(0.0);
+uniform vec2 brushCenterUV;
+uniform float advectionScale : hint_range(-64.0, 64.0) = 16.0;
+uniform float brushScale : hint_range(0.0, 1.0) = 0.1;
+uniform bool brushOn = false;
+
+bool hasBrush(vec2 uv){
+	return (brushOn && distance(uv, brushCenterUV) < brushScale);
+}
+
+vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
+	vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
+	vec2 uvInt = floor(st);
+	vec2 uvFrac = fract(st);
+
+	vec4 a = texture(sampler, (uvInt + vec2(0.5, 0.5)) * texelSize);
+	vec4 b = texture(sampler, (uvInt + vec2(1.5, 0.5)) * texelSize);
+	vec4 c = texture(sampler, (uvInt + vec2(0.5, 1.5)) * texelSize);
+	vec4 d = texture(sampler, (uvInt + vec2(1.5, 1.5)) * texelSize);
+	return mix(mix(a, b, uvFrac.x), mix(c, d, uvFrac.x), uvFrac.y);
+}
+
+void fragment()
+{
+	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV, TEXTURE_PIXEL_SIZE).xy;
+	vec4 final_color = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
+	if (hasBrush(UV)){
+		final_color = dyeColor;
+	}
+	COLOR = final_color;
+}"

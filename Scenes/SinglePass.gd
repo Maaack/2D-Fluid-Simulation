@@ -21,26 +21,36 @@ func _refresh_velocity():
 	$VelocityViewport/Icon2.hide()
 	$VelocityViewport/Icon.show()
 
-func _refresh_dye():
-	$DyeViewport/Icon.hide()
-	$DyeViewport/Icon2.show()
-	yield(get_tree().create_timer(0.25), "timeout")
-	$DyeViewport/Icon2.hide()
+func _refresh_icon():
+	$DyeViewport/Sprite.hide()
 	$DyeViewport/Icon.show()
+	yield(get_tree().create_timer(0.25), "timeout")
+	$DyeViewport/Icon.hide()
+	$DyeViewport/Sprite.show()
+
+func _refresh_clear():
+	$DyeViewport/Sprite.hide()
+	$DyeViewport.render_target_clear_mode = Viewport.CLEAR_MODE_ALWAYS
+	yield(get_tree().create_timer(0.25), "timeout")
+	$DyeViewport.render_target_clear_mode = Viewport.CLEAR_MODE_NEVER
+	$DyeViewport/Sprite.show()
 
 func _ready():
 	_refresh_velocity()
-	_refresh_dye()
+	_refresh_icon()
 
 func _process(delta):
-	$DyeViewport/Icon.material.set_shader_param("deltaTime", delta)
+	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)
 	$VelocityViewport/Icon.material.set_shader_param("deltaTime", delta)
 
 func _on_RefreshVelocityButton_pressed():
 	_refresh_velocity()
 
-func _on_RefreshDyeButton_pressed():
-	_refresh_dye()
+func _on_RefreshIconButton_pressed():
+	_refresh_icon()
+
+func _on_RefreshClearButton_pressed():
+	_refresh_clear()
 
 func _on_PressureScaleSpinBox_value_changed(value):
 	$VelocityViewport/Icon.material.set_shader_param("pressureScale", value)
@@ -53,9 +63,20 @@ func _on_PressureMinSpinBox_value_changed(value):
 func _on_PressureMaxSpinBox_value_changed(value):
 	$VelocityViewport/Icon.material.set_shader_param("pressureMax", value)
 
-func _on_MouseControl_force_applied(position, vector):
+func _on_MouseVelocityControl_force_applied(position, vector):
 	$VelocityViewport/Icon.material.set_shader_param("externalForceVector", vector)
 	$VelocityViewport/Icon.material.set_shader_param("externalForceUV", position)
+	$VelocityViewport/Icon.material.set_shader_param("externalForceOn", true)
+
+func _on_MouseVelocityControl_force_released(position):
+	$VelocityViewport/Icon.material.set_shader_param("externalForceOn", false)
+
+func _on_MouseDyeControl_force_applied(position, vector):
+	$DyeViewport/Sprite.material.set_shader_param("brushCenterUV", position)
+	$DyeViewport/Sprite.material.set_shader_param("brushOn", true)
+
+func _on_MouseDyeControl_force_released(position):
+	$DyeViewport/Sprite.material.set_shader_param("brushOn", false)
 
 func _on_LaplacianSpinBox_value_changed(value):
 	$VelocityViewport/Icon.material.set_shader_param("laplacianScale", value)
@@ -64,9 +85,6 @@ func _on_LaplacianSpinBox_value_changed(value):
 func _on_VorticitySpinBox_value_changed(value):
 	$VelocityViewport/Icon.material.set_shader_param("vorticityScale", value)
 	$VorticityViewport/Sprite.material.set_shader_param("vorticityScale", value)
-
-func _on_AdvectionSpinBox_value_changed(value):
-	$DyeViewport/Icon.material.set_shader_param("advectionScale", value)
 
 func _on_BordersOptionButton_toggled(button_pressed):
 	$VelocityViewport/Icon.material.set_shader_param("borderOn", button_pressed)
@@ -87,4 +105,3 @@ func _on_FinalViewButton_item_selected(index):
 			$FinalViewportIcon.texture = $CurlViewport.get_texture()
 		Options.VORTICITY:
 			$FinalViewportIcon.texture = $VorticityViewport.get_texture()
-
