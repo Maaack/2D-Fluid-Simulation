@@ -68,7 +68,7 @@ viewport_path = NodePath("VelocityViewport")
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/deltaTime = 0.05
-shader_param/brushColor = Color( 0.34902, 1, 0, 0.0117647 )
+shader_param/brushColor = Color( 0.305882, 0.803922, 0.0392157, 0.0313726 )
 shader_param/brushCenterUV = null
 shader_param/brushScale = 0.1
 shader_param/brushOn = false
@@ -206,7 +206,6 @@ centered = false
 size = Vector2( 512, 512 )
 transparent_bg = true
 render_target_v_flip = true
-render_target_clear_mode = 2
 render_target_update_mode = 3
 
 [node name="Icon" type="Sprite" parent="DyeViewport"]

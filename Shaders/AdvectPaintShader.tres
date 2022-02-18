@@ -33,9 +33,9 @@ vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
 void fragment()
 {
 	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV, TEXTURE_PIXEL_SIZE).xy;
-	vec4 final_color = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
+	vec4 finalColor = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
 	if (hasBrush(UV)){
-		final_color = brushColor;
+		finalColor = mix(finalColor, brushColor, brushColor.a);
 	}
-	COLOR = final_color;
+	COLOR = finalColor;
 }"

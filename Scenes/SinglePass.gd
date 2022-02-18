@@ -30,9 +30,7 @@ func _refresh_icon():
 
 func _refresh_clear():
 	$DyeViewport/Sprite.hide()
-	$DyeViewport.render_target_clear_mode = Viewport.CLEAR_MODE_ALWAYS
 	yield(get_tree().create_timer(0.25), "timeout")
-	$DyeViewport.render_target_clear_mode = Viewport.CLEAR_MODE_NEVER
 	$DyeViewport/Sprite.show()
 
 func _ready():
