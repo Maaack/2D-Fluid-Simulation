@@ -38,6 +38,10 @@ func _refresh_clear():
 func _ready():
 	_refresh_velocity()
 	_refresh_icon()
+	var velocity_texture = $VelocityBackBufferViewport.get_texture()
+	$VelocityViewport/Icon.texture = velocity_texture
+	var dye_texture = $BackBufferViewport.get_texture()
+	$DyeViewport/Sprite.texture = dye_texture
 
 func _process(delta):
 	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)

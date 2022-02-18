@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Scenes/SinglePass.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://Shaders/SinglePassLaplacianShader.tres" type="Shader" id=11]
 [ext_resource path="res://Shaders/SinglePassPressureForceShader.tres" type="Shader" id=12]
 [ext_resource path="res://Shaders/SinglePassVorticityShader.tres" type="Shader" id=13]
-[ext_resource path="res://clearTexture.png" type="Texture" id=14]
 [ext_resource path="res://whiteTexture.png" type="Texture" id=15]
 
 [sub_resource type="ShaderMaterial" id=55]
@@ -30,9 +29,6 @@ shader_param/externalForceVector = null
 shader_param/externalForceUV = null
 shader_param/externalForceOn = null
 shader_param/borderOn = true
-
-[sub_resource type="ViewportTexture" id=56]
-viewport_path = NodePath("VelocityBackBufferViewport")
 
 [sub_resource type="ViewportTexture" id=67]
 viewport_path = NodePath("VelocityViewport")
@@ -72,15 +68,11 @@ viewport_path = NodePath("VelocityViewport")
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/deltaTime = 0.05
-shader_param/dyeColor = Color( 0.34902, 1, 0, 0.0117647 )
+shader_param/brushColor = Color( 0.34902, 1, 0, 0.0117647 )
 shader_param/brushCenterUV = null
-shader_param/advectionScale = 4.0
 shader_param/brushScale = 0.1
 shader_param/brushOn = false
 shader_param/velocity = SubResource( 57 )
-
-[sub_resource type="ViewportTexture" id=34]
-viewport_path = NodePath("BackBufferViewport")
 
 [sub_resource type="ViewportTexture" id=66]
 viewport_path = NodePath("DyeViewport")
@@ -140,7 +132,6 @@ centered = false
 [node name="Icon" type="Sprite" parent="VelocityViewport"]
 visible = false
 material = SubResource( 55 )
-texture = SubResource( 56 )
 centered = false
 
 [node name="VelocityBackBufferViewport" type="Viewport" parent="."]
@@ -223,15 +214,9 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 5 )
 centered = false
 
-[node name="Clear" type="Sprite" parent="DyeViewport"]
-visible = false
-texture = ExtResource( 14 )
-centered = false
-
 [node name="Sprite" type="Sprite" parent="DyeViewport"]
 visible = false
 material = SubResource( 65 )
-texture = SubResource( 34 )
 centered = false
 
 [node name="BackBufferViewport" type="Viewport" parent="."]

@@ -9,7 +9,6 @@ shader_type canvas_item;
 
 uniform highp sampler2D velocity;
 uniform highp float deltaTime;
-uniform float advectionScale = 4.0;
 
 vec4 getTransparentForBlack(vec4 color) {
 	return color == vec4(0.0, 0.0, 0.0, 1.0) ? vec4(color.rgb, 0.0) : color;
@@ -33,6 +32,6 @@ vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
 
 void fragment()
 {
-	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, TEXTURE_PIXEL_SIZE).xy * TEXTURE_PIXEL_SIZE * advectionScale;
+	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV.xy, TEXTURE_PIXEL_SIZE).xy;
 	COLOR = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
 }"

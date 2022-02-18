@@ -9,9 +9,8 @@ shader_type canvas_item;
 
 uniform highp sampler2D velocity;
 uniform highp float deltaTime = 0.05;
-uniform vec4 dyeColor : hint_color = vec4(0.0);
+uniform vec4 brushColor : hint_color = vec4(0.0);
 uniform vec2 brushCenterUV;
-uniform float advectionScale : hint_range(-64.0, 64.0) = 16.0;
 uniform float brushScale : hint_range(0.0, 1.0) = 0.1;
 uniform bool brushOn = false;
 
@@ -36,7 +35,7 @@ void fragment()
 	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV, TEXTURE_PIXEL_SIZE).xy;
 	vec4 final_color = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
 	if (hasBrush(UV)){
-		final_color = dyeColor;
+		final_color = brushColor;
 	}
 	COLOR = final_color;
 }"
