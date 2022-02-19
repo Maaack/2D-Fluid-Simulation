@@ -12,7 +12,7 @@
 [ext_resource path="res://Shaders/CurlShader.tres" type="Shader" id=10]
 [ext_resource path="res://Shaders/SinglePassLaplacianShader.tres" type="Shader" id=11]
 [ext_resource path="res://Shaders/SinglePassPressureForceShader.tres" type="Shader" id=12]
-[ext_resource path="res://Shaders/SinglePassVorticityShader.tres" type="Shader" id=13]
+[ext_resource path="res://Shaders/VorticityShader.tres" type="Shader" id=13]
 [ext_resource path="res://whiteTexture.png" type="Texture" id=15]
 
 [sub_resource type="ShaderMaterial" id=55]
@@ -296,7 +296,7 @@ margin_left = 360.0
 margin_top = 616.0
 margin_right = 434.0
 margin_bottom = 640.0
-max_value = 4.0
+max_value = 8.0
 step = 0.01
 value = 0.5
 __meta__ = {
@@ -308,7 +308,7 @@ margin_left = 360.0
 margin_top = 648.0
 margin_right = 434.0
 margin_bottom = 672.0
-max_value = 20.0
+max_value = 16.0
 step = 0.1
 value = 5.0
 __meta__ = {
@@ -464,6 +464,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ResolutionButton" type="OptionButton" parent="UIControl"]
+margin_left = 360.0
+margin_top = 680.0
+margin_right = 488.0
+margin_bottom = 700.0
+text = "512x512"
+align = 1
+items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
+selected = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="force_applied" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_applied"]
 [connection signal="force_released" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_released"]
 [connection signal="force_applied" from="UIControl/MouseDyeControl" to="." method="_on_MouseDyeControl_force_applied"]
@@ -478,3 +491,4 @@ __meta__ = {
 [connection signal="value_changed" from="UIControl/PressureMinSpinBox" to="." method="_on_PressureMinSpinBox_value_changed"]
 [connection signal="value_changed" from="UIControl/PressureMaxSpinBox" to="." method="_on_PressureMaxSpinBox_value_changed"]
 [connection signal="item_selected" from="UIControl/FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
+[connection signal="item_selected" from="UIControl/ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
