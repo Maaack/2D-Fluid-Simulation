@@ -33,9 +33,6 @@ shader_param/borderOn = true
 [sub_resource type="ViewportTexture" id=67]
 viewport_path = NodePath("VelocityViewport")
 
-[sub_resource type="ViewportTexture" id=36]
-viewport_path = NodePath("VelocityViewport")
-
 [sub_resource type="ShaderMaterial" id=59]
 shader = ExtResource( 7 )
 
@@ -77,6 +74,9 @@ shader_param/velocity = SubResource( 57 )
 [sub_resource type="ViewportTexture" id=66]
 viewport_path = NodePath("DyeViewport")
 
+[sub_resource type="ViewportTexture" id=36]
+viewport_path = NodePath("VelocityViewport")
+
 [sub_resource type="ViewportTexture" id=35]
 viewport_path = NodePath("DyeViewport")
 
@@ -88,6 +88,10 @@ size = Vector2( 512, 512 )
 transparent_bg = true
 render_target_v_flip = true
 render_target_update_mode = 3
+
+[node name="Sprite" type="Sprite" parent="VelocityViewport"]
+material = SubResource( 55 )
+centered = false
 
 [node name="Icon2" type="Node2D" parent="VelocityViewport"]
 visible = false
@@ -129,11 +133,6 @@ scale = Vector2( 8, 8 )
 texture = ExtResource( 15 )
 centered = false
 
-[node name="Icon" type="Sprite" parent="VelocityViewport"]
-visible = false
-material = SubResource( 55 )
-centered = false
-
 [node name="VelocityBackBufferViewport" type="Viewport" parent="."]
 size = Vector2( 512, 512 )
 render_target_v_flip = true
@@ -142,11 +141,6 @@ render_target_update_mode = 3
 [node name="Sprite" type="Sprite" parent="VelocityBackBufferViewport"]
 texture = SubResource( 67 )
 centered = false
-
-[node name="VelocityIcon" type="Sprite" parent="."]
-material = ExtResource( 6 )
-position = Vector2( 272, 288 )
-texture = SubResource( 36 )
 
 [node name="DivergenceViewport" type="Viewport" parent="."]
 size = Vector2( 512, 512 )
@@ -208,14 +202,13 @@ transparent_bg = true
 render_target_v_flip = true
 render_target_update_mode = 3
 
+[node name="Sprite" type="Sprite" parent="DyeViewport"]
+material = SubResource( 65 )
+centered = false
+
 [node name="Icon" type="Sprite" parent="DyeViewport"]
 scale = Vector2( 8, 8 )
 texture = ExtResource( 5 )
-centered = false
-
-[node name="Sprite" type="Sprite" parent="DyeViewport"]
-visible = false
-material = SubResource( 65 )
 centered = false
 
 [node name="BackBufferViewport" type="Viewport" parent="."]
@@ -227,7 +220,12 @@ render_target_update_mode = 3
 texture = SubResource( 66 )
 centered = false
 
-[node name="FinalViewportIcon" type="Sprite" parent="."]
+[node name="VelocitySprite" type="Sprite" parent="."]
+material = ExtResource( 6 )
+position = Vector2( 272, 288 )
+texture = SubResource( 36 )
+
+[node name="FinalViewportSprite" type="Sprite" parent="."]
 material = ExtResource( 6 )
 position = Vector2( 928, 288 )
 texture = SubResource( 35 )
