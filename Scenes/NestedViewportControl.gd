@@ -41,3 +41,9 @@ func set_shader_param(key : String, value) -> void:
 	if not is_instance_valid(nested_viewport_instance):
 		return
 	nested_viewport_instance.set_shader_param(key, value)
+
+func set_size(value : Vector2) -> void:
+	size = value
+	if not is_instance_valid(nested_viewport_instance):
+		return
+	nested_viewport_instance.set_viewport_size(size)

@@ -9,6 +9,15 @@ enum Options{
 	VISCOSITY,
 	}
 
+enum Resolutions{
+	_64,
+	_128,
+	_256,
+	_512
+}
+const MIN_RESOLUTION : int = 64;
+const MAX_RESOLUTION : int = 512;
+
 var velocity_source_next : bool = false
 var scale_brush_force : float = 0.1;
 
@@ -101,3 +110,26 @@ func _on_FinalViewButton_item_selected(index):
 			$FinalViewportSprite.texture = $GradientSubtractionViewport.get_texture()
 		Options.VISCOSITY:
 			$FinalViewportSprite.texture = $VelocityBorderViewport.get_texture()
+
+func _on_ResolutionButton_item_selected(index):
+	var resolution : int
+	match(index):
+		Resolutions._64:
+			resolution = 64;
+		Resolutions._128:
+			resolution = 128;
+		Resolutions._256:
+			resolution = 256;
+		Resolutions._512:
+			resolution = 512;
+	var size = Vector2(resolution, resolution)
+	var sprite_scale = Vector2(MAX_RESOLUTION/resolution, MAX_RESOLUTION/resolution)
+	var icon_scale = Vector2(resolution/MIN_RESOLUTION, resolution/MIN_RESOLUTION)
+	for child in get_children():
+		if child is Viewport:
+			child.size = size
+		elif child is Sprite:
+			child.scale = sprite_scale
+			child.region_enabled = true
+			child.region_enabled = false
+	$DyeViewport/Icon.scale = icon_scale

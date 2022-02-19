@@ -370,6 +370,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ResolutionButton" type="OptionButton" parent="."]
+margin_left = 320.0
+margin_top = 600.0
+margin_right = 448.0
+margin_bottom = 620.0
+text = "512x512"
+align = 1
+items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
+selected = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="force_applied" from="MouseControl" to="." method="_on_MouseControl_force_applied"]
 [connection signal="force_released" from="MouseControl" to="." method="_on_MouseControl_force_released"]
 [connection signal="pressed" from="RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
@@ -382,3 +395,4 @@ __meta__ = {
 [connection signal="value_changed" from="VorticityMeasureSpinBox" to="." method="_on_VorticityMeasureSpinBox_value_changed"]
 [connection signal="toggled" from="BordersOptionButton" to="." method="_on_BordersOptionButton_toggled"]
 [connection signal="item_selected" from="FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
+[connection signal="item_selected" from="ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
