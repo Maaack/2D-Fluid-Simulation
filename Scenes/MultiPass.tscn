@@ -45,6 +45,7 @@ viewport_path = NodePath("DivergenceViewport")
 [sub_resource type="ShaderMaterial" id=27]
 resource_local_to_scene = true
 shader = ExtResource( 4 )
+shader_param/pressureScale = 1.0
 shader_param/divergence = SubResource( 49 )
 
 [sub_resource type="ShaderMaterial" id=61]
@@ -73,7 +74,7 @@ viewport_path = NodePath("GradientSubtractionViewport")
 resource_local_to_scene = true
 shader = ExtResource( 15 )
 shader_param/deltaTime = 0.05
-shader_param/brushColor = Color( 0.34902, 1, 0, 0.0117647 )
+shader_param/brushColor = Color( 0, 0, 0, 0 )
 shader_param/brushCenterUV = null
 shader_param/brushScale = 0.1
 shader_param/brushOn = false
@@ -103,7 +104,7 @@ centered = false
 
 [node name="ViscosityViewport" parent="." instance=ExtResource( 10 )]
 render_target_v_flip = true
-levels = 8
+levels = 4
 shader_material = ExtResource( 8 )
 texture = SubResource( 18 )
 
@@ -214,6 +215,7 @@ __meta__ = {
 }
 
 [node name="SwitchVelocityButton" type="Button" parent="."]
+visible = false
 margin_left = 208.0
 margin_top = 600.0
 margin_right = 268.0
@@ -261,20 +263,19 @@ margin_right = 450.0
 margin_bottom = 672.0
 min_value = 1.0
 max_value = 50.0
-value = 8.0
+value = 4.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViscosityMeasureSpinBox" type="SpinBox" parent="."]
+[node name="ViscosityScaleSpinBox" type="SpinBox" parent="."]
 margin_left = 376.0
 margin_top = 680.0
 margin_right = 450.0
 margin_bottom = 704.0
-min_value = 1.0
-max_value = 100000.0
-step = 10.0
-value = 5000.0
+max_value = 1000.0
+step = 0.1
+value = 64.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -284,9 +285,9 @@ margin_left = 536.0
 margin_top = 648.0
 margin_right = 610.0
 margin_bottom = 672.0
-max_value = 10.0
+max_value = 64.0
 step = 0.1
-value = 5.0
+value = 2.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -364,7 +365,7 @@ margin_right = 992.0
 margin_bottom = 580.0
 text = "Dye"
 align = 1
-items = [ "Dye", null, false, 1, false, "Divergence", null, false, 0, false, "Pressure", null, false, 2, null, "Pressure Force", null, false, 3, null, "Viscosity", null, false, 4, null ]
+items = [ "Dye", null, false, 1, false, "Viscosity", null, false, 0, false, "Divergence", null, false, 4, null, "Pressure", null, false, 5, null, "Pressure Force", null, false, 6, null ]
 selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -375,10 +376,20 @@ margin_left = 320.0
 margin_top = 600.0
 margin_right = 448.0
 margin_bottom = 620.0
-text = "512x512"
+text = "256x256"
 align = 1
 items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
-selected = 3
+selected = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="."]
+margin_left = 168.0
+margin_top = 600.0
+margin_right = 296.0
+margin_bottom = 620.0
+color = Color( 0.00784314, 0, 1, 0.0392157 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -391,8 +402,9 @@ __meta__ = {
 [connection signal="pressed" from="RefreshClearButton" to="." method="_on_RefreshClearButton_pressed"]
 [connection signal="value_changed" from="PressureLevelSpinBox" to="." method="_on_PressureLevelSpinBox_value_changed"]
 [connection signal="value_changed" from="ViscosityLevelSpinBox" to="." method="_on_ViscosityLevelSpinBox_value_changed"]
-[connection signal="value_changed" from="ViscosityMeasureSpinBox" to="." method="_on_ViscosityMeasureSpinBox_value_changed"]
+[connection signal="value_changed" from="ViscosityScaleSpinBox" to="." method="_on_ViscosityScaleSpinBox_value_changed"]
 [connection signal="value_changed" from="VorticityMeasureSpinBox" to="." method="_on_VorticityMeasureSpinBox_value_changed"]
 [connection signal="toggled" from="BordersOptionButton" to="." method="_on_BordersOptionButton_toggled"]
 [connection signal="item_selected" from="FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
 [connection signal="item_selected" from="ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
+[connection signal="color_changed" from="ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]

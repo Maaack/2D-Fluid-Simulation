@@ -4,5 +4,4 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/viscosity = 5000.0
-shader_param/deltaTime = 0.05
+shader_param/viscosityScale = 64.0

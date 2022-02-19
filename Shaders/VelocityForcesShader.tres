@@ -7,8 +7,7 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-uniform float vorticity;
-uniform highp float deltaTime;
+uniform float vorticityScale = 8.0;
 
 float curl (sampler2D velocity, vec2 uv, vec2 texelSize) {
 	vec2 xOffset = vec2(texelSize.x, 0.0);
@@ -21,26 +20,26 @@ float curl (sampler2D velocity, vec2 uv, vec2 texelSize) {
 	return velocityTop - velocityBottom + velocityLeft - velocityRight;
 }
 
-vec2 vorticityForce (sampler2D velocity, vec2 uv, vec2 texelSize) {
+vec4 vorticityPass(sampler2D velocity, vec2 uv, vec2 texelSize) {
 	vec2 xOffset = vec2(texelSize.x, 0.0);
 	vec2 yOffset = vec2(0.0, texelSize.y);
 	
-	float curlTop = texture(velocity, uv + yOffset).x;
-	float curlBottom = texture(velocity, uv - yOffset).x;
-	float curlRight = texture(velocity, uv + xOffset).y;
-	float curlLeft = texture(velocity, uv - xOffset).y;
+	float curlTop = curl(velocity, uv + yOffset, texelSize);
+	float curlBottom = curl(velocity, uv - yOffset, texelSize);
+	float curlRight = curl(velocity, uv + xOffset, texelSize);
+	float curlLeft = curl(velocity, uv - xOffset, texelSize);
 	float curlCenter = curl(velocity, uv, texelSize);
 	
 	vec2 force = vec2(abs(curlTop) - abs(curlBottom), abs(curlLeft) - abs(curlRight));
 	force /= (length(force) + 1e-5);
- 	force *= vorticity * curlCenter;
+ 	force *= vorticityScale * curlCenter;
 	vec2 velocityForce = texture(velocity, uv).xy;
-	velocityForce += force * deltaTime;
-	return velocityForce;
+	vec2 velocityFinal = velocityForce.xy + (velocityForce.xy * force);
+	return vec4(velocityFinal, 0.0, 1.0);
 }
 
-
-void fragment () {
-	COLOR = vec4(vorticityForce(TEXTURE, UV, TEXTURE_PIXEL_SIZE), 0.0, 1.0);
+void fragment()
+{
+	COLOR = vorticityPass(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
 }
 "
