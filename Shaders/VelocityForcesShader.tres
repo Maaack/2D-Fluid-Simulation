@@ -8,8 +8,6 @@ This shader is under MIT license.
 shader_type canvas_item;
 
 uniform float vorticity;
-uniform vec2 externalForceVector;
-uniform vec2 externalForceUV;
 uniform highp float deltaTime;
 
 float curl (sampler2D velocity, vec2 uv, vec2 texelSize) {
@@ -41,13 +39,8 @@ vec2 vorticityForce (sampler2D velocity, vec2 uv, vec2 texelSize) {
 	return velocityForce;
 }
 
-vec2 externalForce(vec2 uv){
-	if (distance(uv, externalForceUV) < 0.1) {
-		return externalForceVector;
-	}
-}
 
 void fragment () {
-	COLOR = vec4(vorticityForce(TEXTURE, UV, TEXTURE_PIXEL_SIZE) + externalForce(UV), 0.0, 1.0);
+	COLOR = vec4(vorticityForce(TEXTURE, UV, TEXTURE_PIXEL_SIZE), 0.0, 1.0);
 }
 "

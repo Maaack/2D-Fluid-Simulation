@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Scenes/Main.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://Shaders/BorderConditionShader.tres" type="Shader" id=12]
 [ext_resource path="res://Shaders/VelocityForcesShaderMaterial.tres" type="Material" id=13]
 [ext_resource path="res://Scenes/MouseControl.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Shaders/AdvectPaintShader.tres" type="Shader" id=15]
 
 [sub_resource type="ViewportTexture" id=36]
 viewport_path = NodePath("VelocityViewport")
@@ -23,9 +24,12 @@ viewport_path = NodePath("VelocityViewport")
 
 [sub_resource type="ShaderMaterial" id=55]
 resource_local_to_scene = true
-shader = ExtResource( 9 )
+shader = ExtResource( 15 )
 shader_param/deltaTime = 0.05
-shader_param/advectionScale = 4.0
+shader_param/brushColor = Color( 0, 0, 0, 0 )
+shader_param/brushCenterUV = null
+shader_param/brushScale = 0.1
+shader_param/brushOn = false
 shader_param/velocity = SubResource( 57 )
 
 [sub_resource type="ViewportTexture" id=56]
@@ -94,7 +98,6 @@ viewport_path = NodePath("GradientSubtractionViewport")
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/deltaTime = 2.0
-shader_param/advectionScale = 4.0
 shader_param/velocity = SubResource( 32 )
 
 [sub_resource type="ViewportTexture" id=33]
@@ -104,7 +107,6 @@ viewport_path = NodePath("GradientSubtractionViewport")
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/deltaTime = 0.05
-shader_param/advectionScale = 4.0
 shader_param/velocity = SubResource( 33 )
 
 [sub_resource type="ViewportTexture" id=34]
@@ -492,6 +494,7 @@ __meta__ = {
 }
 
 [connection signal="force_applied" from="MouseControl" to="." method="_on_MouseControl_force_applied"]
+[connection signal="force_released" from="MouseControl" to="." method="_on_MouseControl_force_released"]
 [connection signal="pressed" from="RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
 [connection signal="pressed" from="SwitchVelocityButton" to="." method="_on_SwitchVelocityButton_pressed"]
 [connection signal="pressed" from="RefreshDyeButton" to="." method="_on_RefreshDyeButton_pressed"]
