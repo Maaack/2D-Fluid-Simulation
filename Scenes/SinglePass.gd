@@ -86,8 +86,8 @@ func _apply_velocity_force(position, vector, cascade : bool = false):
 		_apply_dye_paint(position, vector)
 
 func _release_velocity_force(position, cascade : bool = false):
-	$VelocityViewport/Sprite.material.set_shader_param("externalForceVector", Vector2.ZERO)
 	$VelocityViewport/Sprite.material.set_shader_param("externalForceOn", false)
+	$VelocityViewport/Sprite.material.set_shader_param("externalForceVector", Vector2.ZERO)
 	if (cascade):
 		_release_dye_paint(position)
 

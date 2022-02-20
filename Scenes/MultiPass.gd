@@ -91,8 +91,8 @@ func _apply_velocity_force(position, vector, cascade : bool = false):
 		_apply_dye_paint(position, vector)
 
 func _release_velocity_force(position, cascade : bool = false):
-	$VelocityViewport/Sprite.material.set_shader_param("brushColor", Color.black)
 	$VelocityViewport/Sprite.material.set_shader_param("brushOn", false)
+	$VelocityViewport/Sprite.material.set_shader_param("brushColor", Color.black)
 	if (cascade):
 		_release_dye_paint(position)
 
