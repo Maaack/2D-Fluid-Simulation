@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node",
+"class": "CommonBase",
+"language": "GDScript",
+"path": "res://Scenes/CommonBase.gd"
+} ]
+_global_script_class_icons={
+"CommonBase": ""
+}
+
 [application]
 
 config/name="2D Fluid Simulator"

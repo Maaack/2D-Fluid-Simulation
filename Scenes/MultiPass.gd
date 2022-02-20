@@ -1,4 +1,4 @@
-extends Node
+extends CommonBase
 
 
 enum Options{
@@ -9,17 +9,9 @@ enum Options{
 	PRESSURE_FORCE,
 	}
 
-enum Resolutions{
-	_64,
-	_128,
-	_256,
-	_512
-}
-const MIN_RESOLUTION : int = 64;
-const MAX_RESOLUTION : int = 512;
-
 var velocity_source_next : bool = false
-var scale_brush_force : float = 0.1;
+var scale_brush_force : float = 0.1
+onready var brushes_linked : bool = $UIControl/LinkBrushCheckbox.pressed
 
 func _refresh_velocity():
 	$VelocityViewport/Sprite.hide()
@@ -49,10 +41,11 @@ func _ready():
 	$VelocityViewport/Sprite.material.set_shader_param("velocity", $GradientSubtractionViewport.get_texture())
 	var dye_texture = $BackBufferViewport.get_texture()
 	$DyeViewport/Sprite.texture = dye_texture
-	$DyeViewport/Sprite.material.set_shader_param("brushColor", $ColorPickerButton.color)
+	$DyeViewport/Sprite.material.set_shader_param("brushColor", $UIControl/ColorPickerButton.color)
 	yield(get_tree().create_timer(0.1), "timeout")
-	_set_resolution($ResolutionButton.selected)
-	_set_brush_scale($BrushSizeHSlider.value)
+	_set_resolution($UIControl/ResolutionButton.selected)
+	_set_brush_texture($UIControl/BrushTypeButton.selected)
+	_set_brush_scale($UIControl/BrushSizeHSlider.value)
 
 func _process(delta):
 	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)
@@ -82,21 +75,49 @@ func _on_ViscosityScaleSpinBox_value_changed(value):
 func _on_VorticityMeasureSpinBox_value_changed(value):
 	$VelocityForcesViewport/Sprite.material.set_shader_param("vorticityScale", value)
 
-func _on_BordersOptionButton_toggled(button_pressed):
+func _on_BordersCheckbox_toggled(button_pressed):
 	$VelocityBorderViewport/Sprite.material.set_shader_param("active", button_pressed)
+	$PressureBorderViewport/Sprite.material.set_shader_param("active", button_pressed)
 
-func _on_MouseControl_force_applied(position, vector):
+func _on_LinkBrushCheckbox_toggled(button_pressed):
+	brushes_linked = button_pressed
+
+func _apply_velocity_force(position, vector, cascade : bool = false):
 	vector *= scale_brush_force
 	$VelocityViewport/Sprite.material.set_shader_param("brushCenterUV", position)
 	$VelocityViewport/Sprite.material.set_shader_param("brushColor", Color(vector.x, vector.y, 0.0, 1.0))
 	$VelocityViewport/Sprite.material.set_shader_param("brushOn", true)
-	$DyeViewport/Sprite.material.set_shader_param("brushCenterUV", position)
-	$DyeViewport/Sprite.material.set_shader_param("brushOn", true)
+	if (cascade):
+		_apply_dye_paint(position, vector)
 
-func _on_MouseControl_force_released(position):
+func _release_velocity_force(position, cascade : bool = false):
 	$VelocityViewport/Sprite.material.set_shader_param("brushColor", Color.black)
 	$VelocityViewport/Sprite.material.set_shader_param("brushOn", false)
+	if (cascade):
+		_release_dye_paint(position)
+
+func _apply_dye_paint(position, vector, cascade : bool = false):
+	$DyeViewport/Sprite.material.set_shader_param("brushCenterUV", position)
+	$DyeViewport/Sprite.material.set_shader_param("brushOn", true)
+	if (cascade):
+		_apply_velocity_force(position, vector)
+
+func _release_dye_paint(position, cascade : bool = false):
 	$DyeViewport/Sprite.material.set_shader_param("brushOn", false)
+	if (cascade):
+		_release_velocity_force(position)
+
+func _on_MouseVelocityControl_force_applied(position, vector):
+	_apply_velocity_force(position, vector, brushes_linked)
+
+func _on_MouseVelocityControl_force_released(position):
+	_release_velocity_force(position, brushes_linked)
+
+func _on_MouseDyeControl_force_applied(position, vector):
+	_apply_dye_paint(position, vector, brushes_linked)
+
+func _on_MouseDyeControl_force_released(position):
+	_release_dye_paint(position, brushes_linked)
 
 func _on_ColorPickerButton_color_changed(color):
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", color)
@@ -104,6 +125,22 @@ func _on_ColorPickerButton_color_changed(color):
 func _set_brush_scale(scale : float):
 	$VelocityViewport/Sprite.material.set_shader_param("brushScale", scale)
 	$DyeViewport/Sprite.material.set_shader_param("brushScale", scale)
+
+func _set_brush_texture(texture : int):
+	var brush_texture : Texture
+	match(texture):
+		BrushTypes.SOFTEST:
+			brush_texture = preload("res://Assets/Brushes/SofterBrush.png");
+		BrushTypes.SOFT:
+			brush_texture = preload("res://Assets/Brushes/SoftBrush.png");
+		BrushTypes.HARD:
+			brush_texture = preload("res://Assets/Brushes/HardBrush.png");
+		BrushTypes.HARDEST:
+			brush_texture = preload("res://Assets/Brushes/HarderBrush.png");
+		BrushTypes.BRISTLES:
+			brush_texture = preload("res://Assets/Brushes/BristlesBrush.png");
+	$VelocityViewport/Sprite.material.set_shader_param("brushTexture", brush_texture)
+	$DyeViewport/Sprite.material.set_shader_param("brushTexture", brush_texture)
 
 func _set_resolution(setting : int):
 	var resolution : int
@@ -147,6 +184,9 @@ func _on_FinalViewButton_item_selected(index):
 
 func _on_ResolutionButton_item_selected(index):
 	_set_resolution(index)
+
+func _on_BrushTypeButton_item_selected(index):
+	_set_brush_texture(index)
 
 func _on_BrushSizeHSlider_value_changed(value):
 	_set_brush_scale(value)

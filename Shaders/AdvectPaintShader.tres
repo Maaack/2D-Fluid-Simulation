@@ -9,13 +9,25 @@ shader_type canvas_item;
 
 uniform highp sampler2D velocity;
 uniform highp float deltaTime = 0.05;
+uniform sampler2D brushTexture;
 uniform vec4 brushColor : hint_color = vec4(0.0);
 uniform vec2 brushCenterUV;
 uniform float brushScale : hint_range(0.0, 1.0) = 0.1;
 uniform bool brushOn = false;
 
 bool hasBrush(vec2 uv){
-	return (brushOn && distance(uv, brushCenterUV) < brushScale);
+	return (brushOn && distance(uv, brushCenterUV) < brushScale / 2.0);
+}
+
+float getBrushAlpha(vec2 uv, vec2 texelSize){
+	ivec2 brushSize = textureSize(brushTexture, 0);
+	if (brushSize.x == 0) {
+		return brushColor.a;
+	}
+	vec2 brushOffset = vec2(0.5) * brushScale;
+	vec2 brushUV = ((brushOffset + brushCenterUV - uv) / brushScale);
+	float brushAlpha = texture(brushTexture, brushUV).a;
+	return brushAlpha * brushColor.a;
 }
 
 vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
@@ -35,7 +47,7 @@ void fragment()
 	vec2 coord = UV.xy - deltaTime * bilerp(velocity, UV, TEXTURE_PIXEL_SIZE).xy;
 	vec4 finalColor = bilerp(TEXTURE, coord, TEXTURE_PIXEL_SIZE);
 	if (hasBrush(UV)){
-		finalColor = mix(finalColor, brushColor, brushColor.a);
+		finalColor = mix(finalColor, brushColor, getBrushAlpha(UV, TEXTURE_PIXEL_SIZE));
 	}
 	COLOR = finalColor;
 }"

@@ -19,8 +19,8 @@
 resource_local_to_scene = true
 shader = ExtResource( 3 )
 shader_param/vorticityScale = 5.0
-shader_param/laplacianScale = 0.5
-shader_param/pressureScale = 0.5
+shader_param/laplacianScale = 4.0
+shader_param/pressureScale = 2.0
 shader_param/pressureMin = 0.5
 shader_param/pressureMax = 3.0
 shader_param/deltaTime = 0.05
@@ -65,7 +65,7 @@ viewport_path = NodePath("VelocityViewport")
 resource_local_to_scene = true
 shader = ExtResource( 9 )
 shader_param/deltaTime = 0.05
-shader_param/brushColor = Color( 0.803922, 0.0392157, 0.0392157, 0.0156863 )
+shader_param/brushColor = Color( 0, 0, 0, 0 )
 shader_param/brushCenterUV = null
 shader_param/brushScale = 0.1
 shader_param/brushOn = false
@@ -222,7 +222,7 @@ centered = false
 
 [node name="VelocitySprite" type="Sprite" parent="."]
 material = ExtResource( 6 )
-position = Vector2( 272, 288 )
+position = Vector2( 288, 288 )
 texture = SubResource( 36 )
 
 [node name="FinalViewportSprite" type="Sprite" parent="."]
@@ -238,9 +238,9 @@ __meta__ = {
 }
 
 [node name="MouseVelocityControl" parent="UIControl" instance=ExtResource( 4 )]
-margin_left = 16.0
+margin_left = 32.0
 margin_top = 32.0
-margin_right = -752.0
+margin_right = -736.0
 margin_bottom = -176.0
 
 [node name="MouseDyeControl" parent="UIControl" instance=ExtResource( 4 )]
@@ -250,10 +250,10 @@ margin_right = -96.0
 margin_bottom = -176.0
 
 [node name="RefreshVelocityButton" type="Button" parent="UIControl"]
-margin_left = 240.0
+margin_left = 256.0
 margin_top = 560.0
-margin_right = 304.0
-margin_bottom = 580.0
+margin_right = 320.0
+margin_bottom = 584.0
 text = "Refresh"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -261,9 +261,9 @@ __meta__ = {
 
 [node name="RefreshIconButton" type="Button" parent="UIControl"]
 margin_left = 880.0
-margin_top = 624.0
+margin_top = 600.0
 margin_right = 976.0
-margin_bottom = 644.0
+margin_bottom = 624.0
 text = "Refresh Icon"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -271,55 +271,55 @@ __meta__ = {
 
 [node name="RefreshClearButton" type="Button" parent="UIControl"]
 margin_left = 880.0
-margin_top = 664.0
+margin_top = 640.0
 margin_right = 976.0
-margin_bottom = 684.0
+margin_bottom = 664.0
 text = "Refresh Clear"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PressureScaleSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 176.0
-margin_top = 616.0
-margin_right = 250.0
-margin_bottom = 640.0
+margin_left = 312.0
+margin_top = 600.0
+margin_right = 386.0
+margin_bottom = 624.0
 max_value = 10.0
 step = 0.05
-value = 0.5
+value = 2.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="LaplacianSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 360.0
-margin_top = 616.0
-margin_right = 434.0
-margin_bottom = 640.0
+margin_left = 500.0
+margin_top = 600.0
+margin_right = 574.0
+margin_bottom = 624.0
 max_value = 8.0
 step = 0.01
-value = 0.5
+value = 4.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VorticitySpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 360.0
-margin_top = 648.0
-margin_right = 434.0
-margin_bottom = 672.0
+margin_left = 500.0
+margin_top = 640.0
+margin_right = 574.0
+margin_bottom = 664.0
 max_value = 16.0
 step = 0.1
-value = 5.0
+value = 8.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BordersOptionButton" type="CheckBox" parent="UIControl"]
-margin_left = 544.0
-margin_top = 649.0
-margin_right = 591.0
-margin_bottom = 673.0
+margin_left = 496.0
+margin_top = 680.0
+margin_right = 543.0
+margin_bottom = 704.0
 pressed = true
 text = "On"
 __meta__ = {
@@ -327,54 +327,58 @@ __meta__ = {
 }
 
 [node name="Label10" type="Label" parent="UIControl"]
-margin_left = 260.0
-margin_top = 652.0
-margin_right = 348.0
-margin_bottom = 666.0
+margin_left = 400.0
+margin_top = 640.0
+margin_right = 488.0
+margin_bottom = 664.0
 text = "Vorticity"
 align = 2
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label13" type="Label" parent="UIControl"]
-margin_left = 260.0
-margin_top = 620.0
-margin_right = 348.0
-margin_bottom = 634.0
+margin_left = 400.0
+margin_top = 600.0
+margin_right = 488.0
+margin_bottom = 624.0
 text = "Laplacian"
 align = 2
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label12" type="Label" parent="UIControl"]
-margin_left = 260.0
-margin_top = 684.0
-margin_right = 348.0
-margin_bottom = 698.0
+margin_left = 768.0
+margin_top = 680.0
+margin_right = 856.0
+margin_bottom = 704.0
 text = "Resolution"
 align = 2
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label11" type="Label" parent="UIControl"]
-margin_left = 448.0
-margin_top = 653.0
-margin_right = 536.0
-margin_bottom = 667.0
+margin_left = 400.0
+margin_top = 680.0
+margin_right = 488.0
+margin_bottom = 704.0
 text = "Borders"
 align = 2
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label2" type="Label" parent="UIControl"]
-margin_left = 72.0
-margin_top = 620.0
-margin_right = 165.0
-margin_bottom = 634.0
+margin_left = 208.0
+margin_top = 604.0
+margin_right = 301.0
+margin_bottom = 618.0
 text = "Pressure Scale"
 align = 2
 __meta__ = {
@@ -382,10 +386,10 @@ __meta__ = {
 }
 
 [node name="PressureMinSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 176.0
-margin_top = 648.0
-margin_right = 250.0
-margin_bottom = 672.0
+margin_left = 312.0
+margin_top = 640.0
+margin_right = 386.0
+margin_bottom = 664.0
 min_value = -10.0
 max_value = 10.0
 step = 0.05
@@ -395,10 +399,10 @@ __meta__ = {
 }
 
 [node name="Label5" type="Label" parent="UIControl"]
-margin_left = 72.0
-margin_top = 652.0
-margin_right = 165.0
-margin_bottom = 666.0
+margin_left = 208.0
+margin_top = 644.0
+margin_right = 301.0
+margin_bottom = 658.0
 text = "Pressure Min"
 align = 2
 __meta__ = {
@@ -406,9 +410,9 @@ __meta__ = {
 }
 
 [node name="PressureMaxSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 176.0
+margin_left = 312.0
 margin_top = 680.0
-margin_right = 250.0
+margin_right = 386.0
 margin_bottom = 704.0
 min_value = -10.0
 max_value = 10.0
@@ -419,9 +423,9 @@ __meta__ = {
 }
 
 [node name="Label6" type="Label" parent="UIControl"]
-margin_left = 72.0
+margin_left = 208.0
 margin_top = 684.0
-margin_right = 165.0
+margin_right = 301.0
 margin_bottom = 698.0
 text = "Pressure Max"
 align = 2
@@ -455,7 +459,7 @@ __meta__ = {
 margin_left = 864.0
 margin_top = 560.0
 margin_right = 992.0
-margin_bottom = 580.0
+margin_bottom = 584.0
 text = "Dye"
 align = 1
 items = [ "Dye", null, false, 1, false, "Divergence", null, false, 0, false, "Pressure", null, false, 2, null, "Pressure Force", null, false, 3, null, "Laplacian", null, false, 4, null, "Curl", null, false, 5, null, "Vorticity", null, false, 6, null ]
@@ -465,15 +469,66 @@ __meta__ = {
 }
 
 [node name="ResolutionButton" type="OptionButton" parent="UIControl"]
-margin_left = 360.0
+margin_left = 864.0
 margin_top = 680.0
-margin_right = 488.0
-margin_bottom = 700.0
-text = "512x512"
+margin_right = 992.0
+margin_bottom = 704.0
+text = "256x256"
 align = 1
 items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
-selected = 3
+selected = 2
 __meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LinkBrushCheckbox" type="CheckBox" parent="UIControl"]
+margin_left = 576.0
+margin_top = 560.0
+margin_right = 640.0
+margin_bottom = 584.0
+pressed = true
+text = "Link"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BrushSizeHSlider" type="HSlider" parent="UIControl"]
+margin_left = 48.0
+margin_top = 680.0
+margin_right = 176.0
+margin_bottom = 704.0
+min_value = 0.005
+max_value = 0.4
+step = 0.005
+value = 0.2
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="UIControl"]
+margin_left = 48.0
+margin_top = 600.0
+margin_right = 176.0
+margin_bottom = 624.0
+color = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BrushTypeButton" type="OptionButton" parent="UIControl"]
+margin_left = 48.0
+margin_top = 640.0
+margin_right = 176.0
+margin_bottom = 664.0
+text = "Hard"
+align = 1
+items = [ "Softest", null, false, 1, false, "Soft", null, false, 0, false, "Hard", null, false, 2, null, "Hardest", null, false, 3, null, "Bristles", null, false, 4, null ]
+selected = 2
+__meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -492,3 +547,7 @@ __meta__ = {
 [connection signal="value_changed" from="UIControl/PressureMaxSpinBox" to="." method="_on_PressureMaxSpinBox_value_changed"]
 [connection signal="item_selected" from="UIControl/FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
 [connection signal="item_selected" from="UIControl/ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
+[connection signal="toggled" from="UIControl/LinkBrushCheckbox" to="." method="_on_LinkBrushCheckbox_toggled"]
+[connection signal="value_changed" from="UIControl/BrushSizeHSlider" to="." method="_on_BrushSizeHSlider_value_changed"]
+[connection signal="color_changed" from="UIControl/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="item_selected" from="UIControl/BrushTypeButton" to="." method="_on_BrushTypeButton_item_selected"]

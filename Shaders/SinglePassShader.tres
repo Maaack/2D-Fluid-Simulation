@@ -7,20 +7,28 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-uniform float vorticityScale = 5.0;
-uniform float laplacianScale = 0.5;
-uniform float pressureScale = 0.5;
+uniform float vorticityScale = 8.0;
+uniform float laplacianScale = 4.0;
+uniform float pressureScale = 2.0;
 uniform float pressureMin = 0.5;
 uniform float pressureMax = 3.0;
 uniform float deltaTime = 0.05;
 uniform float brushScale = 0.1;
+uniform sampler2D externalForceBrush;
 uniform vec2 externalForceVector;
 uniform vec2 externalForceUV;
 uniform bool externalForceOn;
 uniform bool borderOn = true;
 
-vec4 getTransparentForBlack(vec4 color) {
-	return color == vec4(0.0, 0.0, 0.0, 1.0) ? vec4(color.rgb, 0.0) : color;
+float getBrushAlpha(vec2 uv, vec2 texelSize){
+	ivec2 brushSize = textureSize(externalForceBrush, 0);
+	if (brushSize.x == 0) {
+		return 1.0;
+	}
+	vec2 brushOffset = vec2(0.5) * brushScale;
+	vec2 brushUV = ((brushOffset + externalForceUV - uv) / brushScale);
+	float brushAlpha = texture(externalForceBrush, brushUV).a;
+	return brushAlpha;
 }
 
 vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
@@ -62,10 +70,13 @@ vec2 vorticityForce  (sampler2D velocity, vec2 uv, vec2 texelSize) {
  	force *= vorticityScale * curlCenter;
 	return force;
 }
+bool hasExternalForce(vec2 uv){
+	return (externalForceOn && distance(uv, externalForceUV) < brushScale / 2.0);
+}
 
-vec2 externalForce(vec2 uv){
-	if (externalForceOn && distance(uv, externalForceUV) < brushScale) {
-		return externalForceVector;
+vec2 externalForce(vec2 uv, vec2 texelSize){
+	if (hasExternalForce(uv)) {
+		return externalForceVector * getBrushAlpha(uv, texelSize);
 	}
 }
 
@@ -97,7 +108,7 @@ vec4 velocityPass(sampler2D sampler, vec2 uv, vec2 texelSize)
 	vec2 coord = uv - (deltaTime * center.xy);
 	vec4 finalColor = bilerp(sampler, coord, texelSize);
 	finalColor.z = center.z;
-	finalColor.xy += deltaTime * (viscosityForce + pressureForce + externalForce(uv) + vorticityForce(sampler, uv, texelSize)).xy;
+	finalColor.xy += deltaTime * (viscosityForce + pressureForce + externalForce(uv, texelSize) + vorticityForce(sampler, uv, texelSize)).xy;
 	return finalColor;
 }
 
