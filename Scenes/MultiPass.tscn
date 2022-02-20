@@ -4,7 +4,7 @@
 [ext_resource path="res://Shaders/ShowNegativeColorNoZShaderMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Shaders/GradientSubtractionShader.tres" type="Shader" id=3]
 [ext_resource path="res://Shaders/PressureShader.tres" type="Shader" id=4]
-[ext_resource path="res://baseTexture.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/baseTexture.png" type="Texture" id=5]
 [ext_resource path="res://Scenes/PressureViewport.gd" type="Script" id=6]
 [ext_resource path="res://Shaders/DivergenceShaderMaterial.tres" type="Material" id=7]
 [ext_resource path="res://Shaders/ViscosityShaderMaterial.tres" type="Material" id=8]
@@ -19,7 +19,7 @@ shader = ExtResource( 15 )
 shader_param/deltaTime = 0.05
 shader_param/brushColor = Color( 0, 0, 0, 0 )
 shader_param/brushCenterUV = null
-shader_param/brushScale = 0.064
+shader_param/brushScale = 0.1
 shader_param/brushOn = false
 
 [sub_resource type="ViewportTexture" id=18]
@@ -45,7 +45,6 @@ viewport_path = NodePath("DivergenceViewport")
 [sub_resource type="ShaderMaterial" id=27]
 resource_local_to_scene = true
 shader = ExtResource( 4 )
-shader_param/pressureScale = 1.0
 shader_param/divergence = SubResource( 49 )
 
 [sub_resource type="ShaderMaterial" id=61]
@@ -204,10 +203,16 @@ margin_top = 32.0
 margin_right = -728.0
 margin_bottom = -176.0
 
+[node name="MouseControl2" parent="." instance=ExtResource( 14 )]
+margin_left = 672.0
+margin_top = 32.0
+margin_right = -96.0
+margin_bottom = -176.0
+
 [node name="RefreshVelocityButton" type="Button" parent="."]
-margin_left = 80.0
+margin_left = 224.0
 margin_top = 600.0
-margin_right = 140.0
+margin_right = 292.0
 margin_bottom = 620.0
 text = "Refresh"
 __meta__ = {
@@ -227,9 +232,9 @@ __meta__ = {
 
 [node name="RefreshIconButton" type="Button" parent="."]
 margin_left = 864.0
-margin_top = 624.0
+margin_top = 600.0
 margin_right = 992.0
-margin_bottom = 644.0
+margin_bottom = 620.0
 text = "Refresh Icon"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -237,18 +242,18 @@ __meta__ = {
 
 [node name="RefreshClearButton" type="Button" parent="."]
 margin_left = 864.0
-margin_top = 672.0
+margin_top = 640.0
 margin_right = 992.0
-margin_bottom = 692.0
+margin_bottom = 660.0
 text = "Refresh Clear"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PressureLevelSpinBox" type="SpinBox" parent="."]
-margin_left = 184.0
+margin_left = 776.0
 margin_top = 680.0
-margin_right = 258.0
+margin_right = 850.0
 margin_bottom = 704.0
 min_value = 1.0
 value = 16.0
@@ -348,9 +353,9 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="."]
-margin_left = 24.0
+margin_left = 616.0
 margin_top = 684.0
-margin_right = 176.0
+margin_right = 768.0
 margin_bottom = 698.0
 text = "Pressure Multi-passes"
 align = 2
@@ -385,17 +390,32 @@ __meta__ = {
 }
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="."]
-margin_left = 168.0
-margin_top = 600.0
-margin_right = 296.0
-margin_bottom = 620.0
+margin_left = 48.0
+margin_top = 648.0
+margin_right = 176.0
+margin_bottom = 668.0
 color = Color( 0.00784314, 0, 1, 0.0392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BrushSizeHSlider" type="HSlider" parent="."]
+margin_left = 48.0
+margin_top = 680.0
+margin_right = 176.0
+margin_bottom = 704.0
+min_value = 0.005
+max_value = 0.2
+step = 0.005
+value = 0.065
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [connection signal="force_applied" from="MouseControl" to="." method="_on_MouseControl_force_applied"]
 [connection signal="force_released" from="MouseControl" to="." method="_on_MouseControl_force_released"]
+[connection signal="force_applied" from="MouseControl2" to="." method="_on_MouseControl_force_applied"]
+[connection signal="force_released" from="MouseControl2" to="." method="_on_MouseControl_force_released"]
 [connection signal="pressed" from="RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
 [connection signal="pressed" from="SwitchVelocityButton" to="." method="_on_SwitchVelocityButton_pressed"]
 [connection signal="pressed" from="RefreshIconButton" to="." method="_on_RefreshIconButton_pressed"]
@@ -408,3 +428,4 @@ __meta__ = {
 [connection signal="item_selected" from="FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
 [connection signal="item_selected" from="ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
 [connection signal="color_changed" from="ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="value_changed" from="BrushSizeHSlider" to="." method="_on_BrushSizeHSlider_value_changed"]

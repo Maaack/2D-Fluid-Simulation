@@ -4,7 +4,7 @@
 [ext_resource path="res://Shaders/NegativeShaderMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Shaders/SinglePassShader.tres" type="Shader" id=3]
 [ext_resource path="res://Scenes/MouseControl.tscn" type="PackedScene" id=4]
-[ext_resource path="res://baseTexture.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Images/baseTexture.png" type="Texture" id=5]
 [ext_resource path="res://Shaders/ShowNegativeColorNoZShaderMaterial.tres" type="Material" id=6]
 [ext_resource path="res://Shaders/DivergenceShader.tres" type="Shader" id=7]
 [ext_resource path="res://Shaders/SinglePassPressureShader.tres" type="Shader" id=8]
@@ -13,7 +13,7 @@
 [ext_resource path="res://Shaders/SinglePassLaplacianShader.tres" type="Shader" id=11]
 [ext_resource path="res://Shaders/SinglePassPressureForceShader.tres" type="Shader" id=12]
 [ext_resource path="res://Shaders/VorticityShader.tres" type="Shader" id=13]
-[ext_resource path="res://whiteTexture.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Images/whiteTexture.png" type="Texture" id=15]
 
 [sub_resource type="ShaderMaterial" id=55]
 resource_local_to_scene = true

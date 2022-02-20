@@ -51,7 +51,8 @@ func _ready():
 	$DyeViewport/Sprite.texture = dye_texture
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", $ColorPickerButton.color)
 	yield(get_tree().create_timer(0.1), "timeout")
-	_set_resolution(Resolutions._256)
+	_set_resolution($ResolutionButton.selected)
+	_set_brush_scale($BrushSizeHSlider.value)
 
 func _process(delta):
 	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)
@@ -100,6 +101,10 @@ func _on_MouseControl_force_released(position):
 func _on_ColorPickerButton_color_changed(color):
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", color)
 
+func _set_brush_scale(scale : float):
+	$VelocityViewport/Sprite.material.set_shader_param("brushScale", scale)
+	$DyeViewport/Sprite.material.set_shader_param("brushScale", scale)
+
 func _set_resolution(setting : int):
 	var resolution : int
 	match(setting):
@@ -143,3 +148,5 @@ func _on_FinalViewButton_item_selected(index):
 func _on_ResolutionButton_item_selected(index):
 	_set_resolution(index)
 
+func _on_BrushSizeHSlider_value_changed(value):
+	_set_brush_scale(value)
