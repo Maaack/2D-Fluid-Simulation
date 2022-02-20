@@ -2,10 +2,10 @@
 ### In progress  
 Made in Godot 3.4.2
 
-![Screenshot 01](./Assets/Screenshot_11.png)
-![Screenshot 02](./Assets/Screenshot_12.png)
-![Screenshot 03](./Assets/Screenshot_13.png)
-![Screenshot 03](./Assets/Screenshot_14.png)
+![Screenshot 01](./Assets/Screenshots/Screenshot_11.png)
+![Screenshot 02](./Assets/Screenshots/Screenshot_12.png)
+![Screenshot 03](./Assets/Screenshots/Screenshot_13.png)
+![Screenshot 03](./Assets/Screenshots/Screenshot_14.png)
 
 ## Description
 
