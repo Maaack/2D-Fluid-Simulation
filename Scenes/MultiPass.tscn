@@ -231,17 +231,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SwitchVelocityButton" type="Button" parent="UIControl"]
-visible = false
-margin_left = 208.0
-margin_top = 600.0
-margin_right = 268.0
-margin_bottom = 620.0
-text = "Switch"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="RefreshIconButton" type="Button" parent="UIControl"]
 margin_left = 864.0
 margin_top = 600.0
@@ -300,7 +289,7 @@ __meta__ = {
 [node name="VorticityMeasureSpinBox" type="SpinBox" parent="UIControl"]
 margin_left = 576.0
 margin_top = 600.0
-margin_right = 662.0
+margin_right = 672.0
 margin_bottom = 636.0
 max_value = 64.0
 step = 0.1
@@ -312,7 +301,7 @@ __meta__ = {
 [node name="BordersCheckbox" type="CheckBox" parent="UIControl"]
 margin_left = 576.0
 margin_top = 640.0
-margin_right = 648.0
+margin_right = 672.0
 margin_bottom = 674.0
 pressed = true
 text = "On"
@@ -380,6 +369,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label13" type="Label" parent="UIControl"]
+margin_left = 464.0
+margin_top = 680.0
+margin_right = 560.0
+margin_bottom = 712.0
+text = "Vel. Source"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Label2" type="Label" parent="UIControl"]
 margin_left = 168.0
 margin_top = 680.0
@@ -426,6 +427,19 @@ text = "256x256"
 align = 1
 items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
 selected = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VelocitySourceButton" type="OptionButton" parent="UIControl"]
+margin_left = 574.0
+margin_top = 680.0
+margin_right = 736.0
+margin_bottom = 712.0
+text = "Viscosity"
+align = 1
+items = [ "Viscosity", null, false, 1, false, "Pressure Force", null, false, 0, false ]
+selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -496,7 +510,6 @@ __meta__ = {
 [connection signal="force_applied" from="UIControl/MouseDyeControl" to="." method="_on_MouseDyeControl_force_applied"]
 [connection signal="force_released" from="UIControl/MouseDyeControl" to="." method="_on_MouseDyeControl_force_released"]
 [connection signal="pressed" from="UIControl/RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
-[connection signal="pressed" from="UIControl/SwitchVelocityButton" to="." method="_on_SwitchVelocityButton_pressed"]
 [connection signal="pressed" from="UIControl/RefreshIconButton" to="." method="_on_RefreshIconButton_pressed"]
 [connection signal="pressed" from="UIControl/RefreshClearButton" to="." method="_on_RefreshClearButton_pressed"]
 [connection signal="value_changed" from="UIControl/PressureLevelSpinBox" to="." method="_on_PressureLevelSpinBox_value_changed"]
@@ -507,6 +520,7 @@ __meta__ = {
 [connection signal="toggled" from="UIControl/LinkBrushCheckbox" to="." method="_on_LinkBrushCheckbox_toggled"]
 [connection signal="item_selected" from="UIControl/FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
 [connection signal="item_selected" from="UIControl/ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]
+[connection signal="item_selected" from="UIControl/VelocitySourceButton" to="." method="_on_VelocitySourceButton_item_selected"]
 [connection signal="value_changed" from="UIControl/BrushSizeHSlider" to="." method="_on_BrushSizeHSlider_value_changed"]
 [connection signal="color_changed" from="UIControl/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="item_selected" from="UIControl/BrushTypeButton" to="." method="_on_BrushTypeButton_item_selected"]

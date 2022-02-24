@@ -9,6 +9,10 @@ enum Options{
 	PRESSURE_FORCE,
 	}
 
+enum VelocitySource{
+	VISCOSITY,
+	FINAL
+}
 var velocity_source_next : bool = false
 var scale_brush_force : float = 0.1
 onready var brushes_linked : bool = $UIControl/LinkBrushCheckbox.pressed
@@ -29,17 +33,17 @@ func _refresh_clear():
 	yield(get_tree().create_timer(0.3), "timeout")
 	$DyeViewport/Sprite.show()
 
-func _switch_velocity():
-	velocity_source_next = not velocity_source_next
-	if velocity_source_next:
-		$VelocityViewport/Sprite.texture = $GradientSubtractionViewport.get_texture()
-	else:
-		$VelocityViewport/Sprite.texture = $ViscosityViewport.get_texture()
-
+func _set_velocity_source(setting : int):
+	var velocity_texture : Texture
+	match(setting):
+		VelocitySource.VISCOSITY:
+			velocity_texture = $ViscosityViewport.get_texture()
+		VelocitySource.FINAL:
+			velocity_texture = $GradientSubtractionViewport.get_texture()
+	$VelocityViewport/Sprite.texture = velocity_texture
 
 func _ready():
-	var velocity_texture = $ViscosityViewport.get_texture()
-	$VelocityViewport/Sprite.texture = velocity_texture
+	_set_velocity_source(VelocitySource.VISCOSITY)
 	$VelocityViewport/Sprite.material.set_shader_param("velocity", $GradientSubtractionViewport.get_texture())
 	var dye_texture = $BackBufferViewport.get_texture()
 	$DyeViewport/Sprite.texture = dye_texture
@@ -55,9 +59,6 @@ func _process(delta):
 
 func _on_RefreshVelocityButton_pressed():
 	_refresh_velocity()
-
-func _on_SwitchVelocityButton_pressed():
-	_switch_velocity()
 
 func _on_RefreshIconButton_pressed():
 	_refresh_icon()
@@ -205,3 +206,6 @@ func _on_SceneButton_item_selected(index):
 			get_tree().change_scene("res://Scenes/Main.tscn")
 		Scenes.SINGLE_PASS:
 			get_tree().change_scene("res://Scenes/SinglePass.tscn")
+
+func _on_VelocitySourceButton_item_selected(index):
+	_set_velocity_source(index)

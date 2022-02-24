@@ -225,17 +225,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SwitchVelocityButton" type="Button" parent="UIControl"]
-visible = false
-margin_left = 208.0
-margin_top = 600.0
-margin_right = 268.0
-margin_bottom = 620.0
-text = "Switch"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="RefreshClearButton" type="Button" parent="UIControl"]
 margin_left = 464.0
 margin_top = 680.0
@@ -371,7 +360,6 @@ __meta__ = {
 [connection signal="force_applied" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_applied"]
 [connection signal="force_released" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_released"]
 [connection signal="pressed" from="UIControl/RefreshVelocityButton" to="." method="_on_RefreshVelocityButton_pressed"]
-[connection signal="pressed" from="UIControl/SwitchVelocityButton" to="." method="_on_SwitchVelocityButton_pressed"]
 [connection signal="pressed" from="UIControl/RefreshClearButton" to="." method="_on_RefreshClearButton_pressed"]
 [connection signal="item_selected" from="UIControl/FinalViewButton" to="." method="_on_FinalViewButton_item_selected"]
 [connection signal="item_selected" from="UIControl/ResolutionButton" to="." method="_on_ResolutionButton_item_selected"]

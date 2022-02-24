@@ -17,7 +17,6 @@ enum ResolutionSettings{
 	HIGHEST,
 }
 
-var velocity_source_next : bool = false
 var scale_brush_force : float = 0.1
 onready var brushes_linked : bool = true
 onready var screen_size = get_viewport().get_visible_rect().size
@@ -31,13 +30,6 @@ func _refresh_clear():
 	$DyeViewport/Sprite.hide()
 	yield(get_tree().create_timer(0.3), "timeout")
 	$DyeViewport/Sprite.show()
-
-func _switch_velocity():
-	velocity_source_next = not velocity_source_next
-	if velocity_source_next:
-		$VelocityViewport/Sprite.texture = $GradientSubtractionViewport.get_texture()
-	else:
-		$VelocityViewport/Sprite.texture = $ViscosityViewport.get_texture()
 
 func _ready():
 	var velocity_texture = $ViscosityViewport.get_texture()
@@ -57,9 +49,6 @@ func _process(delta):
 
 func _on_RefreshVelocityButton_pressed():
 	_refresh_velocity()
-
-func _on_SwitchVelocityButton_pressed():
-	_switch_velocity()
 
 func _on_RefreshClearButton_pressed():
 	_refresh_clear()
