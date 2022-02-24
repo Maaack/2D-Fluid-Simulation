@@ -20,12 +20,11 @@ enum ResolutionSettings{
 var scale_brush_force : float = 0.1
 var colors_array : Array = [
 	Color("5059ff00"),
-	Color("5000ff5e"),
-	Color("5000ffd5"),
-	Color("504400ff"),
-	Color("50c100ff"),
+	Color("5000ff76"),
+	Color("5000ffff"),
+	Color("502b3dff"),
 	Color("50ff00ad"),
-	Color("50ff0c00"),
+	Color("50ff2116"),
 	Color("50ff8300"),
 	Color("50fff500"),
 	Color("50c7ff00"),
