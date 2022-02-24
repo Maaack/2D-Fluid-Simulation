@@ -15,10 +15,11 @@ bool isOnBorder (vec2 uv, vec2 texelSize) {
 }
 
 vec2 borderAdjustment (vec2 uv, vec2 texelSize) {
-	uv.x = uv.x < texelSize.x ? uv.x + texelSize.x : uv.x;
-	uv.x = uv.x > 1.0 - texelSize.x ? uv.x - texelSize.x : uv.x;
-	uv.y = uv.y < texelSize.y ? uv.y + texelSize.y : uv.y;
-	uv.y = uv.y > 1.0 - texelSize.y ? uv.y - texelSize.y : uv.y;
+	vec2 borderSize = 2.0 * texelSize;
+	uv.x = uv.x < borderSize.x ? uv.x + (borderSize.x - uv.x) : uv.x;
+	uv.x = uv.x > 1.0 - borderSize.x ? uv.x - (1.0 - borderSize.x - uv.x) : uv.x;
+	uv.y = uv.y < borderSize.y ? uv.y + (borderSize.y - uv.y) : uv.y;
+	uv.y = uv.y > 1.0 - borderSize.y ? uv.y - (1.0 - borderSize.y - uv.y) : uv.y;
 	return uv;
 }
 
