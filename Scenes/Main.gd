@@ -18,8 +18,24 @@ enum ResolutionSettings{
 }
 
 var scale_brush_force : float = 0.1
-onready var brushes_linked : bool = true
+var colors_array : Array = [
+	Color("5059ff00"),
+	Color("5000ff5e"),
+	Color("5000ffd5"),
+	Color("504400ff"),
+	Color("50c100ff"),
+	Color("50ff00ad"),
+	Color("50ff0c00"),
+	Color("50ff8300"),
+	Color("50fff500"),
+	Color("50c7ff00"),
+]
+
+onready var auto_color : bool = $UIControl/AutoColorCheckBox.pressed
 onready var screen_size = get_viewport().get_visible_rect().size
+
+var brushes_linked : bool = true
+var auto_color_current : int = 0
 
 func _refresh_velocity():
 	$VelocityViewport/Sprite.hide()
@@ -30,6 +46,14 @@ func _refresh_clear():
 	$DyeViewport/Sprite.hide()
 	yield(get_tree().create_timer(0.3), "timeout")
 	$DyeViewport/Sprite.show()
+
+func _rotate_color():
+	if auto_color:
+		auto_color_current += 1
+		auto_color_current %= colors_array.size()
+		var next_color = colors_array[auto_color_current]
+		$UIControl/ColorPickerButton.color = next_color
+		$DyeViewport/Sprite.material.set_shader_param("brushColor", next_color)
 
 func _ready():
 	var velocity_texture = $ViscosityViewport.get_texture()
@@ -75,6 +99,7 @@ func _apply_dye_paint(position, vector, cascade : bool = false):
 
 func _release_dye_paint(position, cascade : bool = false):
 	$DyeViewport/Sprite.material.set_shader_param("brushOn", false)
+	_rotate_color()
 	if (cascade):
 		_release_velocity_force(position)
 
@@ -163,4 +188,6 @@ func _on_SceneButton_item_selected(index):
 			get_tree().change_scene("res://Scenes/MultiPass.tscn")
 		Scenes.SINGLE_PASS:
 			get_tree().change_scene("res://Scenes/SinglePass.tscn")
-		
+
+func _on_AutoColorCheckBox_toggled(button_pressed):
+	auto_color = button_pressed
