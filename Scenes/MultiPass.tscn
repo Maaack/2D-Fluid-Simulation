@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Scenes/MultiPass.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/ShowNegativeColorNoZShaderMaterial.tres" type="Material" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Shaders/ViscosityShaderMaterial.tres" type="Material" id=8]
 [ext_resource path="res://Assets/Brushes/SoftBrush.png" type="Texture" id=9]
 [ext_resource path="res://Scenes/NestedViewportControl.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/UITheme.tres" type="Theme" id=11]
 [ext_resource path="res://Shaders/BorderConditionShader.tres" type="Shader" id=12]
 [ext_resource path="res://Shaders/VelocityForcesShaderMaterial.tres" type="Material" id=13]
 [ext_resource path="res://Scenes/MouseControl.tscn" type="PackedScene" id=14]
@@ -203,6 +204,7 @@ texture = SubResource( 71 )
 [node name="UIControl" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -220,11 +222,11 @@ margin_right = -96.0
 margin_bottom = -176.0
 
 [node name="RefreshVelocityButton" type="Button" parent="UIControl"]
-margin_left = 256.0
+margin_left = 216.0
 margin_top = 560.0
-margin_right = 320.0
-margin_bottom = 584.0
-text = "Refresh"
+margin_right = 363.0
+margin_bottom = 592.0
+text = "Refresh Velocity"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -244,7 +246,7 @@ __meta__ = {
 margin_left = 864.0
 margin_top = 600.0
 margin_right = 992.0
-margin_bottom = 624.0
+margin_bottom = 632.0
 text = "Refresh Icon"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -254,17 +256,17 @@ __meta__ = {
 margin_left = 864.0
 margin_top = 640.0
 margin_right = 992.0
-margin_bottom = 664.0
+margin_bottom = 672.0
 text = "Refresh Clear"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PressureLevelSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 360.0
+margin_left = 368.0
 margin_top = 680.0
-margin_right = 434.0
-margin_bottom = 704.0
+margin_right = 454.0
+margin_bottom = 716.0
 min_value = 1.0
 value = 16.0
 __meta__ = {
@@ -272,10 +274,10 @@ __meta__ = {
 }
 
 [node name="ViscosityLevelSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 360.0
+margin_left = 368.0
 margin_top = 600.0
-margin_right = 434.0
-margin_bottom = 624.0
+margin_right = 454.0
+margin_bottom = 636.0
 min_value = 1.0
 max_value = 50.0
 value = 4.0
@@ -284,10 +286,10 @@ __meta__ = {
 }
 
 [node name="ViscosityScaleSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 360.0
+margin_left = 368.0
 margin_top = 640.0
-margin_right = 434.0
-margin_bottom = 664.0
+margin_right = 454.0
+margin_bottom = 676.0
 max_value = 1000.0
 step = 0.1
 value = 64.0
@@ -296,10 +298,10 @@ __meta__ = {
 }
 
 [node name="VorticityMeasureSpinBox" type="SpinBox" parent="UIControl"]
-margin_left = 528.0
+margin_left = 576.0
 margin_top = 600.0
-margin_right = 602.0
-margin_bottom = 624.0
+margin_right = 662.0
+margin_bottom = 636.0
 max_value = 64.0
 step = 0.1
 value = 2.0
@@ -308,10 +310,10 @@ __meta__ = {
 }
 
 [node name="BordersCheckbox" type="CheckBox" parent="UIControl"]
-margin_left = 544.0
+margin_left = 576.0
 margin_top = 640.0
-margin_right = 591.0
-margin_bottom = 664.0
+margin_right = 648.0
+margin_bottom = 674.0
 pressed = true
 text = "On"
 __meta__ = {
@@ -322,7 +324,7 @@ __meta__ = {
 margin_left = 576.0
 margin_top = 560.0
 margin_right = 640.0
-margin_bottom = 584.0
+margin_bottom = 594.0
 pressed = true
 text = "Link"
 align = 1
@@ -331,10 +333,10 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="UIControl"]
-margin_left = 200.0
+margin_left = 168.0
 margin_top = 600.0
-margin_right = 352.0
-margin_bottom = 624.0
+margin_right = 360.0
+margin_bottom = 632.0
 text = "Viscosity Multi-passes"
 align = 2
 valign = 1
@@ -343,10 +345,10 @@ __meta__ = {
 }
 
 [node name="Label3" type="Label" parent="UIControl"]
-margin_left = 264.0
+margin_left = 272.0
 margin_top = 640.0
-margin_right = 352.0
-margin_bottom = 664.0
+margin_right = 360.0
+margin_bottom = 672.0
 text = "Viscosity"
 align = 2
 valign = 1
@@ -355,10 +357,10 @@ __meta__ = {
 }
 
 [node name="Label10" type="Label" parent="UIControl"]
-margin_left = 448.0
+margin_left = 464.0
 margin_top = 600.0
-margin_right = 520.0
-margin_bottom = 624.0
+margin_right = 560.0
+margin_bottom = 632.0
 text = "Vorticity"
 align = 2
 valign = 1
@@ -369,8 +371,8 @@ __meta__ = {
 [node name="Label11" type="Label" parent="UIControl"]
 margin_left = 464.0
 margin_top = 640.0
-margin_right = 536.0
-margin_bottom = 664.0
+margin_right = 560.0
+margin_bottom = 672.0
 text = "Borders"
 align = 2
 valign = 1
@@ -379,10 +381,10 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="UIControl"]
-margin_left = 200.0
+margin_left = 168.0
 margin_top = 680.0
-margin_right = 352.0
-margin_bottom = 704.0
+margin_right = 360.0
+margin_bottom = 712.0
 text = "Pressure Multi-passes"
 align = 2
 valign = 1
@@ -393,8 +395,8 @@ __meta__ = {
 [node name="Label12" type="Label" parent="UIControl"]
 margin_left = 768.0
 margin_top = 680.0
-margin_right = 856.0
-margin_bottom = 704.0
+margin_right = 858.0
+margin_bottom = 712.0
 text = "Resolution"
 align = 2
 valign = 1
@@ -406,7 +408,7 @@ __meta__ = {
 margin_left = 864.0
 margin_top = 560.0
 margin_right = 992.0
-margin_bottom = 584.0
+margin_bottom = 592.0
 text = "Dye"
 align = 1
 items = [ "Dye", null, false, 1, false, "Viscosity", null, false, 0, false, "Divergence", null, false, 4, null, "Pressure", null, false, 5, null, "Pressure Force", null, false, 6, null ]
@@ -419,7 +421,7 @@ __meta__ = {
 margin_left = 864.0
 margin_top = 680.0
 margin_right = 992.0
-margin_bottom = 704.0
+margin_bottom = 712.0
 text = "256x256"
 align = 1
 items = [ "64x64", null, false, 1, false, "128x128", null, false, 0, false, "256x256", null, false, 2, null, "512x512", null, false, 3, null ]
@@ -429,10 +431,10 @@ __meta__ = {
 }
 
 [node name="BrushSizeHSlider" type="HSlider" parent="UIControl"]
-margin_left = 48.0
+margin_left = 16.0
 margin_top = 680.0
-margin_right = 176.0
-margin_bottom = 704.0
+margin_right = 144.0
+margin_bottom = 712.0
 min_value = 0.005
 max_value = 0.4
 step = 0.005
@@ -442,24 +444,49 @@ __meta__ = {
 }
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="UIControl"]
-margin_left = 48.0
+margin_left = 16.0
 margin_top = 600.0
-margin_right = 176.0
-margin_bottom = 624.0
-color = Color( 1, 0, 0, 1 )
+margin_right = 144.0
+margin_bottom = 632.0
+color = Color( 0.34902, 1, 0, 0.313726 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="BrushTypeButton" type="OptionButton" parent="UIControl"]
-margin_left = 48.0
+margin_left = 16.0
 margin_top = 640.0
-margin_right = 176.0
-margin_bottom = 664.0
+margin_right = 144.0
+margin_bottom = 672.0
 text = "Hard"
 align = 1
 items = [ "Softest", null, false, 1, false, "Soft", null, false, 0, false, "Hard", null, false, 2, null, "Hardest", null, false, 3, null, "Bristles", null, false, 4, null ]
 selected = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label15" type="Label" parent="UIControl"]
+margin_left = 1144.0
+margin_top = 640.0
+margin_right = 1272.0
+margin_bottom = 672.0
+text = "Change Scene"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SceneButton" type="OptionButton" parent="UIControl"]
+margin_left = 1064.0
+margin_top = 680.0
+margin_right = 1272.0
+margin_bottom = 712.0
+text = "Multi-pass Demo"
+align = 1
+items = [ "Multi-pass Simple", null, false, 1, false, "Multi-pass Demo", null, false, 0, false, "Single-pass Demo", null, false, 2, null ]
+selected = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -483,3 +510,4 @@ __meta__ = {
 [connection signal="value_changed" from="UIControl/BrushSizeHSlider" to="." method="_on_BrushSizeHSlider_value_changed"]
 [connection signal="color_changed" from="UIControl/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="item_selected" from="UIControl/BrushTypeButton" to="." method="_on_BrushTypeButton_item_selected"]
+[connection signal="item_selected" from="UIControl/SceneButton" to="." method="_on_SceneButton_item_selected"]

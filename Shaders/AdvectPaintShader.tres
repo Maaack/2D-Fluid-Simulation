@@ -12,11 +12,11 @@ uniform highp float deltaTime = 0.05;
 uniform sampler2D brushTexture;
 uniform vec4 brushColor : hint_color = vec4(0.0);
 uniform vec2 brushCenterUV;
-uniform float brushScale : hint_range(0.0, 1.0) = 0.1;
+uniform vec2 brushScale = vec2(0.1);
 uniform bool brushOn = false;
 
 bool hasBrush(vec2 uv){
-	return (brushOn && distance(uv, brushCenterUV) < brushScale / 2.0);
+	return (brushOn && abs(uv.x - brushCenterUV.x) < brushScale.x / 2.0 && abs(uv.y - brushCenterUV.y) < brushScale.y / 2.0);
 }
 
 float getBrushAlpha(vec2 uv, vec2 texelSize){
@@ -39,7 +39,9 @@ vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
 	vec4 b = texture(sampler, (uvInt + vec2(1.5, 0.5)) * texelSize);
 	vec4 c = texture(sampler, (uvInt + vec2(0.5, 1.5)) * texelSize);
 	vec4 d = texture(sampler, (uvInt + vec2(1.5, 1.5)) * texelSize);
-	return mix(mix(a, b, uvFrac.x), mix(c, d, uvFrac.x), uvFrac.y);
+	vec4 abMix = mix(a, b, uvFrac.x);
+	vec4 cdMix = mix(c, d, uvFrac.x);
+	return mix(abMix, cdMix, uvFrac.y);
 }
 
 void fragment()

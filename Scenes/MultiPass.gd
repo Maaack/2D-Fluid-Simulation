@@ -12,6 +12,7 @@ enum Options{
 var velocity_source_next : bool = false
 var scale_brush_force : float = 0.1
 onready var brushes_linked : bool = $UIControl/LinkBrushCheckbox.pressed
+onready var screenSize = get_viewport().get_visible_rect().size
 
 func _refresh_velocity():
 	$VelocityViewport/Sprite.hide()
@@ -35,6 +36,7 @@ func _switch_velocity():
 	else:
 		$VelocityViewport/Sprite.texture = $ViscosityViewport.get_texture()
 
+
 func _ready():
 	var velocity_texture = $ViscosityViewport.get_texture()
 	$VelocityViewport/Sprite.texture = velocity_texture
@@ -43,7 +45,7 @@ func _ready():
 	$DyeViewport/Sprite.texture = dye_texture
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", $UIControl/ColorPickerButton.color)
 	yield(get_tree().create_timer(0.1), "timeout")
-	_set_resolution($UIControl/ResolutionButton.selected)
+	_set_resolution_setting($UIControl/ResolutionButton.selected)
 	_set_brush_texture($UIControl/BrushTypeButton.selected)
 	_set_brush_scale($UIControl/BrushSizeHSlider.value)
 
@@ -123,8 +125,8 @@ func _on_ColorPickerButton_color_changed(color):
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", color)
 
 func _set_brush_scale(scale : float):
-	$VelocityViewport/Sprite.material.set_shader_param("brushScale", scale)
-	$DyeViewport/Sprite.material.set_shader_param("brushScale", scale)
+	$VelocityViewport/Sprite.material.set_shader_param("brushScale", Vector2(scale, scale))
+	$DyeViewport/Sprite.material.set_shader_param("brushScale", Vector2(scale, scale))
 
 func _set_brush_texture(texture : int):
 	var brush_texture : Texture
@@ -142,7 +144,7 @@ func _set_brush_texture(texture : int):
 	$VelocityViewport/Sprite.material.set_shader_param("brushTexture", brush_texture)
 	$DyeViewport/Sprite.material.set_shader_param("brushTexture", brush_texture)
 
-func _set_resolution(setting : int):
+func _set_resolution_setting(setting : int):
 	var resolution : int
 	match(setting):
 		Resolutions._64:
@@ -181,12 +183,25 @@ func _on_FinalViewButton_item_selected(index):
 			$FinalViewportSprite.texture = $PressureBorderViewport.get_texture()
 		Options.PRESSURE_FORCE:
 			$FinalViewportSprite.texture = $GradientSubtractionViewport.get_texture()
+	if index == Options.DYE:
+		$UIControl/RefreshClearButton.show()
+		$UIControl/RefreshIconButton.show()
+	else:
+		$UIControl/RefreshClearButton.hide()
+		$UIControl/RefreshIconButton.hide()
 
 func _on_ResolutionButton_item_selected(index):
-	_set_resolution(index)
+	_set_resolution_setting(index)
 
 func _on_BrushTypeButton_item_selected(index):
 	_set_brush_texture(index)
 
 func _on_BrushSizeHSlider_value_changed(value):
 	_set_brush_scale(value)
+
+func _on_SceneButton_item_selected(index):
+	match(index):
+		Scenes.MINIMAL:
+			get_tree().change_scene("res://Scenes/Main.tscn")
+		Scenes.SINGLE_PASS:
+			get_tree().change_scene("res://Scenes/SinglePass.tscn")

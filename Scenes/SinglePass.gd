@@ -118,8 +118,8 @@ func _on_ColorPickerButton_color_changed(color):
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", color)
 
 func _set_brush_scale(scale : float):
-	$VelocityViewport/Sprite.material.set_shader_param("brushScale", scale)
-	$DyeViewport/Sprite.material.set_shader_param("brushScale", scale)
+	$VelocityViewport/Sprite.material.set_shader_param("brushScale", Vector2(scale, scale))
+	$DyeViewport/Sprite.material.set_shader_param("brushScale", Vector2(scale, scale))
 
 func _set_brush_texture(texture : int):
 	var brush_texture : Texture
@@ -180,6 +180,12 @@ func _on_FinalViewButton_item_selected(index):
 			$FinalViewportSprite.texture = $CurlViewport.get_texture()
 		Options.VORTICITY:
 			$FinalViewportSprite.texture = $VorticityViewport.get_texture()
+	if index == Options.DYE:
+		$UIControl/RefreshClearButton.show()
+		$UIControl/RefreshIconButton.show()
+	else:
+		$UIControl/RefreshClearButton.hide()
+		$UIControl/RefreshIconButton.hide()
 
 func _on_ResolutionButton_item_selected(index):
 	_set_resolution(index)
@@ -189,3 +195,10 @@ func _on_BrushTypeButton_item_selected(index):
 
 func _on_BrushSizeHSlider_value_changed(value):
 	_set_brush_scale(value)
+
+func _on_SceneButton_item_selected(index):
+	match(index):
+		Scenes.MINIMAL:
+			get_tree().change_scene("res://Scenes/Main.tscn")
+		Scenes.MULTI_PASS:
+			get_tree().change_scene("res://Scenes/MultiPass.tscn")

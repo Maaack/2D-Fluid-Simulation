@@ -13,7 +13,7 @@ uniform float pressureScale = 2.0;
 uniform float pressureMin = 0.5;
 uniform float pressureMax = 3.0;
 uniform float deltaTime = 0.05;
-uniform float brushScale = 0.1;
+uniform vec2 brushScale = vec2(0.1);
 uniform sampler2D externalForceBrush;
 uniform vec2 externalForceVector;
 uniform vec2 externalForceUV;
@@ -71,7 +71,7 @@ vec2 vorticityForce  (sampler2D velocity, vec2 uv, vec2 texelSize) {
 	return force;
 }
 bool hasExternalForce(vec2 uv){
-	return (externalForceOn && distance(uv, externalForceUV) < brushScale / 2.0);
+	return (externalForceOn && distance(uv, externalForceUV) < brushScale.x / 2.0);
 }
 
 vec2 externalForce(vec2 uv, vec2 texelSize){

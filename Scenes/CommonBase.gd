@@ -14,6 +14,11 @@ enum Resolutions{
 	_256,
 	_512
 }
+enum Scenes{
+	MINIMAL,
+	MULTI_PASS,
+	SINGLE_PASS
+}
 const MIN_RESOLUTION : int = 64;
 const MAX_RESOLUTION : int = 512;
 
