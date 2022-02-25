@@ -23,6 +23,7 @@ var colors_array : Array = [
 	Color("5000ff76"),
 	Color("5000ffff"),
 	Color("502b3dff"),
+	Color("507619ff"),
 	Color("50ff00ad"),
 	Color("50ff2116"),
 	Color("50ff8300"),
