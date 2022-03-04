@@ -7,15 +7,17 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-uniform float scale;
-uniform bool active = true;
+uniform float borderScaleFactor = 1.0;
+uniform float borderWidth = 2.0;
+uniform bool borderActive = true;
 
 bool isOnBorder (vec2 uv, vec2 texelSize) {
-	return uv.x < texelSize.x || uv.x > 1.0 - texelSize.x || uv.y < texelSize.y || uv.y > 1.0 - texelSize.y;
+	vec2 borderSize = borderWidth * texelSize;
+	return uv.x < borderSize.x || uv.x > 1.0 - borderSize.x || uv.y < borderSize.y || uv.y > 1.0 - borderSize.y;
 }
 
 vec2 borderAdjustment (vec2 uv, vec2 texelSize) {
-	vec2 borderSize = 2.0 * texelSize;
+	vec2 borderSize = borderWidth * texelSize;
 	uv.x = uv.x < borderSize.x ? uv.x + (borderSize.x - uv.x) : uv.x;
 	uv.x = uv.x > 1.0 - borderSize.x ? uv.x - (1.0 - borderSize.x - uv.x) : uv.x;
 	uv.y = uv.y < borderSize.y ? uv.y + (borderSize.y - uv.y) : uv.y;
@@ -24,10 +26,10 @@ vec2 borderAdjustment (vec2 uv, vec2 texelSize) {
 }
 
 vec4 borderScale (sampler2D sampler, vec2 uv, vec2 texelSize) {
-	if (active && isOnBorder(uv, texelSize)){
+	if (borderActive && isOnBorder(uv, texelSize)){
 		uv = borderAdjustment(uv, texelSize);
 		vec4 color = texture(sampler, uv);
-		return vec4(color.rgb * scale, 1.0);
+		return vec4(color.rgb * borderScaleFactor, 1.0);
 	} else {
 		return texture(sampler, uv);
 	}

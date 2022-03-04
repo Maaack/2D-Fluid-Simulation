@@ -21,7 +21,7 @@ shader = ExtResource( 15 )
 shader_param/deltaTime = 0.05
 shader_param/brushColor = Color( 0, 0, 0, 0 )
 shader_param/brushCenterUV = null
-shader_param/brushScale = 0.1
+shader_param/brushScale = Vector2( 0.1, 0.1 )
 shader_param/brushOn = false
 shader_param/brushTexture = ExtResource( 9 )
 
@@ -33,8 +33,9 @@ viewport_path = NodePath("ViscosityViewport")
 
 [sub_resource type="ShaderMaterial" id=59]
 shader = ExtResource( 12 )
-shader_param/scale = -1.0
-shader_param/active = true
+shader_param/borderScaleFactor = -1.0
+shader_param/borderWidth = 2.0
+shader_param/borderActive = true
 
 [sub_resource type="ViewportTexture" id=68]
 viewport_path = NodePath("VelocityForcesViewport")
@@ -52,8 +53,9 @@ shader_param/divergence = SubResource( 49 )
 
 [sub_resource type="ShaderMaterial" id=61]
 shader = ExtResource( 12 )
-shader_param/scale = 1.0
-shader_param/active = true
+shader_param/borderScaleFactor = 1.0
+shader_param/borderWidth = 2.0
+shader_param/borderActive = true
 
 [sub_resource type="ViewportTexture" id=73]
 viewport_path = NodePath("PressureViewport")
@@ -293,10 +295,7 @@ margin_right = 672.0
 margin_bottom = 636.0
 max_value = 64.0
 step = 0.1
-value = 2.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+value = 8.0
 
 [node name="BordersCheckbox" type="CheckBox" parent="UIControl"]
 margin_left = 576.0

@@ -32,7 +32,7 @@ float getBrushAlpha(vec2 uv, vec2 texelSize){
 }
 
 vec4 bilerp(sampler2D sampler, vec2 uv, vec2 texelSize) {
-	vec2 st = uv / texelSize - 0.5; // Not sure about the - 0.5
+	vec2 st = uv / texelSize - 0.5;
 	vec2 uvInt = floor(st);
 	vec2 uvFrac = fract(st);
 

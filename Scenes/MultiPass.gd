@@ -79,8 +79,8 @@ func _on_VorticityMeasureSpinBox_value_changed(value):
 	$VelocityForcesViewport/Sprite.material.set_shader_param("vorticityScale", value)
 
 func _on_BordersCheckbox_toggled(button_pressed):
-	$VelocityBorderViewport/Sprite.material.set_shader_param("active", button_pressed)
-	$PressureBorderViewport/Sprite.material.set_shader_param("active", button_pressed)
+	$VelocityBorderViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
+	$PressureBorderViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
 
 func _on_LinkBrushCheckbox_toggled(button_pressed):
 	brushes_linked = button_pressed

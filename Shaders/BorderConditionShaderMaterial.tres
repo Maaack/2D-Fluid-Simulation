@@ -4,5 +4,6 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/scale = null
-shader_param/active = true
+shader_param/borderScaleFactor = 1.0
+shader_param/borderWidth = 2.0
+shader_param/borderActive = true

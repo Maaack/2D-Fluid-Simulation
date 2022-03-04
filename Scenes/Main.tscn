@@ -33,8 +33,9 @@ viewport_path = NodePath("ViscosityViewport")
 
 [sub_resource type="ShaderMaterial" id=59]
 shader = ExtResource( 12 )
-shader_param/scale = -1.0
-shader_param/active = true
+shader_param/borderScaleFactor = -1.0
+shader_param/borderWidth = 2.0
+shader_param/borderActive = true
 
 [sub_resource type="ViewportTexture" id=68]
 viewport_path = NodePath("VelocityForcesViewport")
@@ -52,8 +53,9 @@ shader_param/divergence = SubResource( 49 )
 
 [sub_resource type="ShaderMaterial" id=61]
 shader = ExtResource( 12 )
-shader_param/scale = 1.0
-shader_param/active = true
+shader_param/borderScaleFactor = 1.0
+shader_param/borderWidth = 2.0
+shader_param/borderActive = true
 
 [sub_resource type="ViewportTexture" id=73]
 viewport_path = NodePath("PressureViewport")
