@@ -18,24 +18,11 @@ enum ResolutionSettings{
 }
 
 var scale_brush_force : float = 0.1
-var colors_array : Array = [
-	Color("5059ff00"),
-	Color("5000ff76"),
-	Color("5000ffff"),
-	Color("502b3dff"),
-	Color("507619ff"),
-	Color("50ff00ad"),
-	Color("50ff2116"),
-	Color("50ff8300"),
-	Color("50fff500"),
-	Color("50c7ff00"),
-]
 
 onready var auto_color : bool = $UIControl/AutoColorCheckBox.pressed
 onready var screen_size = get_viewport().get_visible_rect().size
 
 var brushes_linked : bool = true
-var auto_color_current : int = 0
 
 func _refresh_velocity():
 	$VelocityViewport/Sprite.hide()
@@ -47,13 +34,13 @@ func _refresh_clear():
 	yield(get_tree().create_timer(0.3), "timeout")
 	$DyeViewport/Sprite.show()
 
-func _rotate_color():
-	if auto_color:
-		auto_color_current += 1
-		auto_color_current %= colors_array.size()
-		var next_color = colors_array[auto_color_current]
-		$UIControl/ColorPickerButton.color = next_color
-		$DyeViewport/Sprite.material.set_shader_param("brushColor", next_color)
+func _is_rotating_color() -> bool:
+	return auto_color
+
+func _apply_rotated_color():
+	var current_color = _get_current_array_color()
+	$UIControl/ColorPickerButton.color = current_color
+	$DyeViewport/Sprite.material.set_shader_param("brushColor", current_color)
 
 func _ready():
 	var velocity_texture = $ViscosityViewport.get_texture()

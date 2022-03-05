@@ -1,14 +1,14 @@
 # 2D Fluid Simulator
 
 [Try the Sim](https://maaack.itch.io/2d-fluid-simulator-in-godot)  
-Made in Godot 3.4.2
+Made in Godot 3.4.3
 
 ![Icon-800x450](./Assets/Media/Icon-800x450.png)
 ![Icon-Paint-800x450](./Assets/Media/Icon-Paint-800x450.png)
 
 ## Description
 
-A 2D Fluid Simulator made in Godot 3.4.2, running on the GPU through Godot’s shader language. It attempts to solve the Navier-Stokes equation in real time by taking advantage of the parallelism of GPU’s.
+A 2D Fluid Simulator made in Godot 3.4.3, running on the GPU through Godot’s shader language. It attempts to solve the Navier-Stokes equation in real time by taking advantage of the parallelism of GPU’s.
 
 ## Issues
 

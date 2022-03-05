@@ -235,9 +235,6 @@ texture = SubResource( 35 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 14 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MouseVelocityControl" parent="UIControl" instance=ExtResource( 4 )]
 margin_left = 32.0
@@ -514,7 +511,7 @@ __meta__ = {
 [node name="ColorPickerButton" type="ColorPickerButton" parent="UIControl"]
 margin_left = 16.0
 margin_top = 600.0
-margin_right = 144.0
+margin_right = 64.0
 margin_bottom = 632.0
 color = Color( 0.34902, 1, 0, 0.313726 )
 __meta__ = {
@@ -559,6 +556,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="AutoColorCheckBox" type="CheckBox" parent="UIControl"]
+margin_left = 72.0
+margin_top = 600.0
+margin_right = 139.0
+margin_bottom = 634.0
+pressed = true
+text = "Auto"
+
 [connection signal="force_applied" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_applied"]
 [connection signal="force_released" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_released"]
 [connection signal="force_applied" from="UIControl/MouseDyeControl" to="." method="_on_MouseDyeControl_force_applied"]
@@ -579,3 +584,4 @@ __meta__ = {
 [connection signal="color_changed" from="UIControl/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="item_selected" from="UIControl/BrushTypeButton" to="." method="_on_BrushTypeButton_item_selected"]
 [connection signal="item_selected" from="UIControl/SceneButton" to="." method="_on_SceneButton_item_selected"]
+[connection signal="toggled" from="UIControl/AutoColorCheckBox" to="." method="_on_AutoColorCheckBox_toggled"]

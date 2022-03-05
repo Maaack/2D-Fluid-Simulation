@@ -366,9 +366,6 @@ margin_right = 139.0
 margin_bottom = 634.0
 pressed = true
 text = "Auto"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="force_applied" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_applied"]
 [connection signal="force_released" from="UIControl/MouseVelocityControl" to="." method="_on_MouseVelocityControl_force_released"]

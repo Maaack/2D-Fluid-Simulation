@@ -11,6 +11,8 @@ enum Options{
 	}
 
 var scale_brush_force : float = 0.5
+
+onready var auto_color : bool = $UIControl/AutoColorCheckBox.pressed
 onready var brushes_linked : bool = $UIControl/LinkBrushCheckbox.pressed
 
 func _refresh_velocity():
@@ -27,6 +29,14 @@ func _refresh_clear():
 	$DyeViewport/Sprite.hide()
 	yield(get_tree().create_timer(0.25), "timeout")
 	$DyeViewport/Sprite.show()
+
+func _is_rotating_color() -> bool:
+	return auto_color
+
+func _apply_rotated_color():
+	var current_color = _get_current_array_color()
+	$UIControl/ColorPickerButton.color = current_color
+	$DyeViewport/Sprite.material.set_shader_param("brushColor", current_color)
 
 func _ready():
 	var velocity_texture = $VelocityBackBufferViewport.get_texture()
@@ -99,6 +109,7 @@ func _apply_dye_paint(position, vector, cascade : bool = false):
 
 func _release_dye_paint(position, cascade : bool = false):
 	$DyeViewport/Sprite.material.set_shader_param("brushOn", false)
+	_rotate_color()
 	if (cascade):
 		_release_velocity_force(position)
 
@@ -202,3 +213,6 @@ func _on_SceneButton_item_selected(index):
 			get_tree().change_scene("res://Scenes/Main.tscn")
 		Scenes.MULTI_PASS:
 			get_tree().change_scene("res://Scenes/MultiPass.tscn")
+
+func _on_AutoColorCheckBox_toggled(button_pressed):
+	auto_color = button_pressed
