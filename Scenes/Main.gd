@@ -25,14 +25,10 @@ onready var screen_size = get_viewport().get_visible_rect().size
 var brushes_linked : bool = true
 
 func _refresh_velocity():
-	$VelocityViewport/Sprite.hide()
-	yield(get_tree().create_timer(0.3), "timeout")
-	$VelocityViewport/Sprite.show()
+	_refresh_sprite($VelocityViewport/Sprite)
 
 func _refresh_clear():
-	$DyeViewport/Sprite.hide()
-	yield(get_tree().create_timer(0.3), "timeout")
-	$DyeViewport/Sprite.show()
+	_refresh_sprite($DyeViewport/Sprite)
 
 func _is_rotating_color() -> bool:
 	return auto_color
@@ -53,6 +49,7 @@ func _ready():
 	_set_brush_scale($UIControl/BrushSizeHSlider.value)
 	yield(get_tree().create_timer(0.1), "timeout")
 	_set_resolution_setting($UIControl/ResolutionButton.selected)
+	current_scene_counter = $UIControl/SceneButton.selected
 
 func _process(delta):
 	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)
@@ -170,11 +167,7 @@ func _on_BrushSizeHSlider_value_changed(value):
 	_set_brush_scale(value)
 
 func _on_SceneButton_item_selected(index):
-	match(index):
-		Scenes.MULTI_PASS:
-			get_tree().change_scene("res://Scenes/MultiPass.tscn")
-		Scenes.SINGLE_PASS:
-			get_tree().change_scene("res://Scenes/SinglePass.tscn")
+	_change_scene_to(index)
 
 func _on_AutoColorCheckBox_toggled(button_pressed):
 	auto_color = button_pressed

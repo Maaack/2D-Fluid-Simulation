@@ -19,19 +19,13 @@ onready var auto_color : bool = $UIControl/AutoColorCheckBox.pressed
 onready var brushes_linked : bool = $UIControl/LinkBrushCheckbox.pressed
 
 func _refresh_velocity():
-	$VelocityViewport/Sprite.hide()
-	yield(get_tree().create_timer(0.3), "timeout")
-	$VelocityViewport/Sprite.show()
-
-func _refresh_icon():
-	$DyeViewport/Icon.show()
-	yield(get_tree().create_timer(0.3), "timeout")
-	$DyeViewport/Icon.hide()
+	_refresh_sprite($VelocityViewport/Sprite)
 
 func _refresh_clear():
-	$DyeViewport/Sprite.hide()
-	yield(get_tree().create_timer(0.3), "timeout")
-	$DyeViewport/Sprite.show()
+	_refresh_sprite($DyeViewport/Sprite)
+
+func _refresh_icon():
+	_refresh_sprite($DyeViewport/Icon, false)
 
 func _set_velocity_source(setting : int):
 	var velocity_texture : Texture
@@ -60,6 +54,7 @@ func _ready():
 	_set_resolution_setting($UIControl/ResolutionButton.selected)
 	_set_brush_texture($UIControl/BrushTypeButton.selected)
 	_set_brush_scale($UIControl/BrushSizeHSlider.value)
+	current_scene_counter = $UIControl/SceneButton.selected
 
 func _process(delta):
 	$DyeViewport/Sprite.material.set_shader_param("deltaTime", delta)
@@ -210,11 +205,7 @@ func _on_BrushSizeHSlider_value_changed(value):
 	_set_brush_scale(value)
 
 func _on_SceneButton_item_selected(index):
-	match(index):
-		Scenes.MINIMAL:
-			get_tree().change_scene("res://Scenes/Main.tscn")
-		Scenes.SINGLE_PASS:
-			get_tree().change_scene("res://Scenes/SinglePass.tscn")
+	_change_scene_to(index)
 
 func _on_VelocitySourceButton_item_selected(index):
 	_set_velocity_source(index)
