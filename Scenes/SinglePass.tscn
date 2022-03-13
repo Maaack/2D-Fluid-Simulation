@@ -1,11 +1,11 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scenes/SinglePass.gd" type="Script" id=1]
+[ext_resource path="res://Shaders/DivergenceShaderMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Shaders/SinglePassShader.tres" type="Shader" id=3]
 [ext_resource path="res://Scenes/MouseControl.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Images/baseTexture.png" type="Texture" id=5]
 [ext_resource path="res://Shaders/ShowNegativeColorNoZShaderMaterial.tres" type="Material" id=6]
-[ext_resource path="res://Shaders/DivergenceShader.tres" type="Shader" id=7]
 [ext_resource path="res://Shaders/SinglePassPressureShader.tres" type="Shader" id=8]
 [ext_resource path="res://Shaders/AdvectPaintShader.tres" type="Shader" id=9]
 [ext_resource path="res://Shaders/CurlShader.tres" type="Shader" id=10]
@@ -31,9 +31,6 @@ shader_param/borderOn = true
 
 [sub_resource type="ViewportTexture" id=67]
 viewport_path = NodePath("VelocityViewport")
-
-[sub_resource type="ShaderMaterial" id=59]
-shader = ExtResource( 7 )
 
 [sub_resource type="ViewportTexture" id=58]
 viewport_path = NodePath("VelocityViewport")
@@ -106,7 +103,7 @@ size = Vector2( 512, 512 )
 render_target_v_flip = true
 
 [node name="Sprite" type="Sprite" parent="DivergenceViewport"]
-material = SubResource( 59 )
+material = ExtResource( 2 )
 texture = SubResource( 58 )
 centered = false
 

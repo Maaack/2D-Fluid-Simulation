@@ -7,7 +7,7 @@ This shader is under MIT license.
 
 shader_type canvas_item;
 
-uniform float vorticityScale = 8.0;
+uniform float vorticityScale = 4.0;
 
 float curl (sampler2D velocity, vec2 uv, vec2 texelSize) {
 	vec2 xOffset = vec2(texelSize.x, 0.0);
