@@ -4,4 +4,4 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/viscosityScale = 64.0
+shader_param/viscosityScale = 16.0

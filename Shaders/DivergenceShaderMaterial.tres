@@ -4,4 +4,4 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/divergenceScale = 0.75
+shader_param/divergenceScale = 0.9

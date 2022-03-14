@@ -10,6 +10,7 @@ enum Options{
 
 enum VelocitySource{
 	VISCOSITY,
+	VORTICITY,
 	FINAL
 }
 
@@ -32,6 +33,8 @@ func _set_velocity_source(setting : int):
 	match(setting):
 		VelocitySource.VISCOSITY:
 			velocity_texture = $ViscosityViewport.get_texture()
+		VelocitySource.VORTICITY:
+			velocity_texture = $VelocityForcesAndBorderViewport.get_texture()
 		VelocitySource.FINAL:
 			velocity_texture = $BorderAndGradientSubtractionViewport.get_texture()
 	$VelocityViewport/Sprite.texture = velocity_texture
@@ -212,3 +215,6 @@ func _on_VelocitySourceButton_item_selected(index):
 
 func _on_AutoColorCheckBox_toggled(button_pressed):
 	auto_color = button_pressed
+
+func _on_DivergenceScaleMeasureSpinBox_value_changed(value):
+	$DivergenceViewport/Sprite.material.set_shader_param("divergenceScale", value)
