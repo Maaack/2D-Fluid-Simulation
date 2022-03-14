@@ -1,0 +1,52 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "/* 
+This shader is under MIT license.
+*/
+
+shader_type canvas_item;
+
+uniform highp sampler2D velocity;
+uniform float borderScaleFactor = 1.0;
+uniform float borderWidth = 1.0;
+uniform bool borderActive = true;
+
+bool isOnBorder (vec2 uv, vec2 texelSize) {
+	vec2 borderSize = borderWidth * texelSize;
+	return uv.x < borderSize.x || uv.x > 1.0 - borderSize.x || uv.y < borderSize.y || uv.y > 1.0 - borderSize.y;
+}
+
+vec2 borderAdjustment (vec2 uv, vec2 texelSize) {
+	vec2 borderSize = borderWidth * texelSize;
+	uv.x = uv.x < borderSize.x ? uv.x + (borderSize.x - uv.x) : uv.x;
+	uv.x = uv.x > 1.0 - borderSize.x ? uv.x - (1.0 - borderSize.x - uv.x) : uv.x;
+	uv.y = uv.y < borderSize.y ? uv.y + (borderSize.y - uv.y) : uv.y;
+	uv.y = uv.y > 1.0 - borderSize.y ? uv.y - (1.0 - borderSize.y - uv.y) : uv.y;
+	return uv;
+}
+
+vec4 borderScale (sampler2D sampler, vec2 uv, vec2 texelSize) {
+	if (borderActive && isOnBorder(uv, texelSize)){
+		uv = borderAdjustment(uv, texelSize);
+		vec4 color = texture(sampler, uv);
+		return vec4(color.rgb * borderScaleFactor, 1.0);
+	} else {
+		return texture(sampler, uv);
+	}
+}
+
+void fragment() {
+	vec2 xOffset = vec2(TEXTURE_PIXEL_SIZE.x, 0.0);
+	vec2 yOffset = vec2(0.0, TEXTURE_PIXEL_SIZE.y);
+
+	float rightX = borderScale(TEXTURE, UV + xOffset, TEXTURE_PIXEL_SIZE).x;
+	float leftX = borderScale(TEXTURE, UV - xOffset, TEXTURE_PIXEL_SIZE).x;
+	float topX = borderScale(TEXTURE, UV + yOffset, TEXTURE_PIXEL_SIZE).x;
+	float bottomX = borderScale(TEXTURE, UV - yOffset, TEXTURE_PIXEL_SIZE).x;
+	
+	vec2 velXY = texture(velocity, UV).xy;
+	velXY.xy -= vec2(rightX - leftX, topX - bottomX) * 0.5;
+	COLOR = vec4(velXY, 0.0, 1.0);
+}
+"
