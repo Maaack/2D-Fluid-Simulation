@@ -41,7 +41,7 @@ func _apply_rotated_color():
 func _ready():
 	var velocity_texture = $ViscosityViewport.get_texture()
 	$VelocityViewport/Sprite.texture = velocity_texture
-	$VelocityViewport/Sprite.material.set_shader_param("velocity", $GradientSubtractionViewport.get_texture())
+	$VelocityViewport/Sprite.material.set_shader_param("velocity", $BorderAndGradientSubtractionViewport.get_texture())
 	var dye_texture = $BackBufferViewport.get_texture()
 	$DyeViewport/Sprite.texture = dye_texture
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", $UIControl/ColorPickerButton.color)
@@ -145,13 +145,13 @@ func _on_FinalViewButton_item_selected(index):
 		Options.VELOCITY:
 			$TextureRect.texture = $VelocityViewport.get_texture()
 		Options.VISCOSITY:
-			$TextureRect.texture = $VelocityBorderViewport.get_texture()
+			$TextureRect.texture = $ViscosityViewport.get_texture()
 		Options.DIVERGENCE:
 			$TextureRect.texture = $DivergenceViewport.get_texture()
 		Options.PRESSURE:
-			$TextureRect.texture = $PressureBorderViewport.get_texture()
+			$TextureRect.texture = $PressureViewport.get_texture()
 		Options.PRESSURE_FORCE:
-			$TextureRect.texture = $GradientSubtractionViewport.get_texture()
+			$TextureRect.texture = $BorderAndGradientSubtractionViewport.get_texture()
 	if index == Options.DYE:
 		$UIControl/RefreshClearButton.show()
 	else:

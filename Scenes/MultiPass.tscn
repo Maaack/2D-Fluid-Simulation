@@ -48,7 +48,7 @@ resource_local_to_scene = true
 shader = ExtResource( 4 )
 shader_param/divergence = SubResource( 49 )
 
-[sub_resource type="ViewportTexture" id=75]
+[sub_resource type="ViewportTexture" id=79]
 viewport_path = NodePath("VelocityForcesAndBorderViewport")
 
 [sub_resource type="ShaderMaterial" id=30]
@@ -57,7 +57,7 @@ shader = ExtResource( 3 )
 shader_param/borderScaleFactor = 1.0
 shader_param/borderWidth = 1.0
 shader_param/borderActive = true
-shader_param/velocity = SubResource( 75 )
+shader_param/velocity = SubResource( 79 )
 
 [sub_resource type="ViewportTexture" id=74]
 viewport_path = NodePath("PressureViewport")
