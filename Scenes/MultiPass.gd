@@ -33,7 +33,7 @@ func _set_velocity_source(setting : int):
 		VelocitySource.VISCOSITY:
 			velocity_texture = $ViscosityViewport.get_texture()
 		VelocitySource.FINAL:
-			velocity_texture = $GradientSubtractionViewport.get_texture()
+			velocity_texture = $BorderAndGradientSubtractionViewport.get_texture()
 	$VelocityViewport/Sprite.texture = velocity_texture
 
 func _is_rotating_color() -> bool:
@@ -46,7 +46,7 @@ func _apply_rotated_color():
 
 func _ready():
 	_set_velocity_source(VelocitySource.VISCOSITY)
-	$VelocityViewport/Sprite.material.set_shader_param("velocity", $GradientSubtractionViewport.get_texture())
+	$VelocityViewport/Sprite.material.set_shader_param("velocity", $BorderAndGradientSubtractionViewport.get_texture())
 	var dye_texture = $BackBufferViewport.get_texture()
 	$DyeViewport/Sprite.texture = dye_texture
 	$DyeViewport/Sprite.material.set_shader_param("brushColor", $UIControl/ColorPickerButton.color)
@@ -79,11 +79,11 @@ func _on_ViscosityScaleSpinBox_value_changed(value):
 	$ViscosityViewport.set_shader_param("viscosityScale", value)
 
 func _on_VorticityMeasureSpinBox_value_changed(value):
-	$VelocityForcesViewport/Sprite.material.set_shader_param("vorticityScale", value)
+	$VelocityForcesAndBorderViewport/Sprite.material.set_shader_param("vorticityScale", value)
 
 func _on_BordersCheckbox_toggled(button_pressed):
-	$VelocityBorderViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
-	$PressureBorderViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
+	$VelocityForcesAndBorderViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
+	$BorderAndGradientSubtractionViewport/Sprite.material.set_shader_param("borderActive", button_pressed)
 
 func _on_LinkBrushCheckbox_toggled(button_pressed):
 	brushes_linked = button_pressed
@@ -181,13 +181,13 @@ func _on_FinalViewButton_item_selected(index):
 		Options.DYE:
 			$FinalViewportSprite.texture = $DyeViewport.get_texture()
 		Options.VISCOSITY:
-			$FinalViewportSprite.texture = $VelocityBorderViewport.get_texture()
+			$FinalViewportSprite.texture = $VelocityForcesAndBorderViewport.get_texture()
 		Options.DIVERGENCE:
 			$FinalViewportSprite.texture = $DivergenceViewport.get_texture()
 		Options.PRESSURE:
-			$FinalViewportSprite.texture = $PressureBorderViewport.get_texture()
+			$FinalViewportSprite.texture = $PressureViewport.get_texture()
 		Options.PRESSURE_FORCE:
-			$FinalViewportSprite.texture = $GradientSubtractionViewport.get_texture()
+			$FinalViewportSprite.texture = $BorderAndGradientSubtractionViewport.get_texture()
 	if index == Options.DYE:
 		$UIControl/RefreshClearButton.show()
 		$UIControl/RefreshIconButton.show()

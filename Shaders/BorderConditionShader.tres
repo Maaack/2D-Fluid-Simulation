@@ -8,7 +8,7 @@ This shader is under MIT license.
 shader_type canvas_item;
 
 uniform float borderScaleFactor = 1.0;
-uniform float borderWidth = 2.0;
+uniform float borderWidth = 1.0;
 uniform bool borderActive = true;
 
 bool isOnBorder (vec2 uv, vec2 texelSize) {

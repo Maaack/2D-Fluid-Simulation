@@ -264,10 +264,7 @@ margin_right = 594.0
 margin_bottom = 676.0
 max_value = 16.0
 step = 0.1
-value = 8.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+value = 5.0
 
 [node name="BordersOptionButton" type="CheckBox" parent="UIControl"]
 margin_left = 504.0
